@@ -336,6 +336,22 @@ abstract class PayloadPipePart[T <: AbstractPipePayload]
   }
 
   def bounceStack(r: T) {
+    (this, r) match {
+      case (pipe: TNetworkPipe, item: NetworkPayload)
+          if pipe.inOutSide >= 0 && pipe.inOutSide < 6 &&
+            item.output == pipe.inOutSide =>
+        val router = pipe.router
+        if (
+          router != null && item.destinationIP > 0 &&
+          router.getID == item.destinationUUID
+        ) {
+          // The destination inventory rejected this delivery. Exclude it for
+          // this trip, release the remaining reservation, and choose a new one.
+          item.travelLog += router.getIPAddress
+          item.resetTrip()
+        }
+      case _ =>
+    }
     itemFlow.unscheduleRemoval(r)
     r.isEntering = true
     r.input = r.output ^ 1

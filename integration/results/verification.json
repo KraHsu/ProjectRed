@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "upstream_tag": "4.12.50-GTNH",
+  "upstream_commit": "4766701a7674f6e0eedf57be7e8ee987393680c1",
+  "verified_utc": "2026-11-10T08:50:12.973195+00:00",
+  "artifact_sha256": "3f4becd788176a5196105f81efc9b6a0c81dc879dfaef438c4642ad2d17ba5a7",
+  "gradle_tests": 20,
+  "native_tests": [
+    "Source-built complete JAR cold-started in isolated GTNH 2.9.0 / Java 25",
+    "Rejected delivery selected an accepting alternative and released original reservation",
+    "Partial insertion: 2 accepted, 3 items and 3 reservations remain",
+    "Adjacent interfaces deliver in both directions and act as a branch",
+    "All 9 native ProjectRed version checks accept an original peer",
+    "Same-fixture original-method failure reproduced; candidate restored and passed"
+  ],
+  "render_cases": 2368,
+  "render_output_identical": true,
+  "limits": [
+    "No real Windows FPS measurement after this patch",
+    "Native Forge version negotiation, not a graphical multiplayer login test",
+    "Does not cover every machine/chip topology",
+    "No change applied to the live game server"
+  ]
+}

@@ -61,7 +61,7 @@ object RenderPipe {
     centerModelsRS = rsgen.centerModels
 
     val woolgen = new PipeModelGenerator
-    woolgen.applyScale(0.80)
+    woolgen.applyScale(0.85)
     sideModelsWool = woolgen.sideModels
     centerModelsWool = woolgen.centerModels
   }
@@ -81,20 +81,6 @@ object RenderPipe {
       uvt = new IconTransformation(p.getIcon(s))
       sideModels(s).render(t, uvt)
     }
-
-    val gen = new PipeModelGenerator
-    sideModels = gen.sideModels
-    centerModels = gen.centerModels
-
-    val rsgen = new PipeModelGenerator
-    rsgen.applyScale(0.90)
-    sideModelsRS = rsgen.sideModels
-    centerModelsRS = rsgen.centerModels
-
-    val woolgen = new PipeModelGenerator
-    woolgen.applyScale(0.85)
-    sideModelsWool = woolgen.sideModels
-    centerModelsWool = woolgen.centerModels
 
   }
 

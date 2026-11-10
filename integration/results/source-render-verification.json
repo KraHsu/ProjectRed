@@ -1,0 +1,35 @@
+{
+  "passed": true,
+  "variants": [
+    {
+      "variant": "original",
+      "cases": 2368,
+      "vertex_fingerprint": "f21eeb6b6d61672e",
+      "geometry_fingerprint": "e674afdc1fd176ad",
+      "check_model_constructions": 2304,
+      "benchmark_model_constructions": 105000,
+      "median_ns_per_pipe": 55839.05,
+      "allocated_bytes_per_pipe": 198747.99,
+      "measured_pipe_calls": 35000,
+      "boundary": "real ProjectRed and CCL; test world/icons and captured Tessellator; no GPU or Angelica"
+    },
+    {
+      "variant": "patched",
+      "cases": 2368,
+      "vertex_fingerprint": "f21eeb6b6d61672e",
+      "geometry_fingerprint": "e674afdc1fd176ad",
+      "check_model_constructions": 0,
+      "benchmark_model_constructions": 0,
+      "median_ns_per_pipe": 3690.05,
+      "allocated_bytes_per_pipe": 274.99,
+      "measured_pipe_calls": 35000,
+      "boundary": "real ProjectRed and CCL; test world/icons and captured Tessellator; no GPU or Angelica"
+    }
+  ],
+  "cpu_path_speedup": 15.132328830232654,
+  "allocation_reduction_percent": 99.86163885229732,
+  "limits": [
+    "Synthetic world/icons and Tessellator sink, real ProjectRed/CCL CPU code",
+    "Not a full GTNH/Angelica GPU test or measured Windows FPS"
+  ]
+}
