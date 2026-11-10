@@ -1,7 +1,7 @@
 package mrtjp.projectred.transportation
 
 import codechicken.lib.data.{MCDataInput, MCDataOutput}
-import codechicken.lib.raytracer.IndexedCuboid6
+import codechicken.lib.raytracer.{ExtendedMOP, IndexedCuboid6}
 import codechicken.lib.render.{CCRenderState, TextureUtils}
 import codechicken.lib.vec.{BlockCoord, Cuboid6, Rotation, Vector3}
 import codechicken.microblock.ISidedHollowConnect
@@ -13,9 +13,11 @@ import mrtjp.projectred.core._
 import mrtjp.core.inventory.InvWrapper
 import net.minecraft.client.renderer.RenderBlocks
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.item.ItemStack
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
-import net.minecraft.util.MovingObjectPosition
+import net.minecraft.util.{ChatComponentText, MovingObjectPosition}
 import net.minecraftforge.common.util.ForgeDirection
+import net.minecraftforge.oredict.OreDictionary
 
 import scala.collection.JavaConversions._
 
@@ -27,18 +29,107 @@ abstract class SubcorePipePart
     with ISidedHollowConnect {
   var meta: Byte = 0
 
+  // Missing NBT means a legacy pipe: retain all six automatic connections.
+  // Only actual item placement opts into the new, initially closed policy.
+  private var connectionMask = 0x3f
+
+  def connectionOpen(side: Int): Boolean =
+    side >= 0 && side < 6 && (connectionMask & (1 << side)) != 0
+
+  override def maskOpen(side: Int): Boolean =
+    connectionOpen(side) && super.maskOpen(side)
+
   def preparePlacement(side: Int, meta: Int) {
     this.meta = meta.asInstanceOf[Byte]
+    connectionMask = 0
   }
 
   override def save(tag: NBTTagCompound) {
     tag.setInteger("connMap", connMap)
     tag.setByte("meta", meta)
+    tag.setByte("manualConnections", connectionMask.toByte)
   }
 
   override def load(tag: NBTTagCompound) {
     connMap = tag.getInteger("connMap")
     meta = tag.getByte("meta")
+    connectionMask =
+      if (tag.hasKey("manualConnections"))
+        tag.getByte("manualConnections") & 0x3f
+      else 0x3f
+  }
+
+  private def setConnectionOpen(side: Int, open: Boolean) {
+    if (open) connectionMask |= 1 << side
+    else connectionMask &= ~(1 << side)
+    tile.markDirty()
+  }
+
+  /** Change both ends before discovery, so neither end can retain a one-way
+    * connection. Covers and pipe-type compatibility still use native discovery.
+    */
+  def toggleConnection(side: Int): Boolean = {
+    if (world.isRemote || side < 0 || side >= 6) return false
+    val adjacent = getStraight(side) match {
+      case p: SubcorePipePart => Some(p)
+      case _                  => None
+    }
+    // A legacy pipe may allow the face while its new neighbour is closed.
+    // Clicking either end must connect that pair on the first click.
+    val open =
+      !(connectionOpen(side) && adjacent.forall(_.connectionOpen(side ^ 1)))
+    setConnectionOpen(side, open)
+    adjacent.foreach(_.setConnectionOpen(side ^ 1, open))
+    val changed = Seq(this) ++ adjacent
+    for (p <- changed) {
+      p.updateInward()
+      p.onNeighborChanged() // also refresh inventory orientation
+    }
+    // Explicitly notify even a disconnected face (notifyExternals skips it).
+    notifyStraight(side)
+    for (p <- changed) p match {
+      case n: TNetworkPipe if !n.needsWork => n.getRouter.update(true)
+      case _                               =>
+    }
+    open
+  }
+
+  override def activate(
+      player: EntityPlayer,
+      hit: MovingObjectPosition,
+      held: ItemStack
+  ): Boolean = {
+    if (
+      held == null || !OreDictionary
+        .getOreIDs(held)
+        .exists(id => OreDictionary.getOreName(id) == "craftingToolWrench")
+    ) return super.activate(player, hit, held)
+
+    // An arm selects its connection, irrespective of which surface was hit.
+    val side = hit match {
+      case m: ExtendedMOP
+          if m.data.isInstanceOf[Int] &&
+            (0 until 6 contains m.data.asInstanceOf[Int]) =>
+        m.data.asInstanceOf[Int]
+      case _ => hit.sideHit
+    }
+    if (side < 0 || side >= 6) return false
+    if (!world.isRemote) {
+      val pos = posOfStraight(side)
+      if (
+        player.canPlayerEdit(x, y, z, side, held) &&
+        player.canPlayerEdit(pos.x, pos.y, pos.z, side ^ 1, held)
+      ) {
+        val open = toggleConnection(side)
+        player.addChatMessage(
+          new ChatComponentText(
+            "Pipe connection " + ForgeDirection.getOrientation(side).name() +
+              (if (open) ": enabled" else ": disabled")
+          )
+        )
+      }
+    }
+    true
   }
 
   override def writeDesc(packet: MCDataOutput) {

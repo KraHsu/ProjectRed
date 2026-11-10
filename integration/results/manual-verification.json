@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "candidate_sha256": "888260ddb3ed6151c45043e14b0de1e0a30860e66b1d7eb4b758e5b20e0fd016",
+  "unit_tests": 20,
+  "native_face_and_connection_assertions": 1049,
+  "native_right_click_assertions": 13,
+  "cold_reload_assertions": 14,
+  "render_cases": 2368,
+  "native_routing_regressions": true,
+  "original_peer_modules_accepted": 9,
+  "limits": [
+    "No graphical Windows client or GPU measurement",
+    "Third-party inventory/claim permutations not exhaustive"
+  ]
+}

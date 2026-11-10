@@ -33,6 +33,11 @@ public class NativeRouting {
     }
     static Object pipe(int x,int y,int z,String type,int meta)throws Exception {
         Object part=c(NS+type).newInstance();invoke(part,"preparePlacement",new Class<?>[]{int.class,int.class},0,meta);
+        // Model a saved legacy network; new item placements intentionally start disconnected.
+        Object legacy=c("net.minecraft.nbt.NBTTagCompound").newInstance();
+        invoke(part,"save",new Class<?>[]{legacy.getClass()},legacy);
+        invoke(legacy,"func_82580_o",new Class<?>[]{String.class},"manualConnections");
+        invoke(part,"load",new Class<?>[]{legacy.getClass()},legacy);
         Object coord=c("codechicken.lib.vec.BlockCoord").getConstructor(int.class,int.class,int.class).newInstance(x,y,z);
         invoke(c("codechicken.multipart.TileMultipart"),"addPart",new Class<?>[]{c("net.minecraft.world.World"),coord.getClass(),c("codechicken.multipart.TMultiPart")},world,coord,part);
         return part;
