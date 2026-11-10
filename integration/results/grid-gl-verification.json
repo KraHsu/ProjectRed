@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "faces_rendered": 6,
+  "state_checks": 132,
+  "nonblack_pixels": 27444,
+  "gl_renderer": "llvmpipe (LLVM 20.1.2, 256 bits)",
+  "limits": "Offscreen OpenGL; not a full GTNH/Angelica or Windows client test"
+}

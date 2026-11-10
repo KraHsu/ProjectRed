@@ -1,0 +1,186 @@
+{
+  "passed": true,
+  "candidate_sha256": "42b0d0dcdb023c33bdbecf8d63ad2eddd75c62a6810e5f64b925f3eeb35c5d20",
+  "results": {
+    "NativeConnections": {
+      "gt_wrench_metadata": 16,
+      "passed": true,
+      "assertions": 1049,
+      "cases": [
+        "BasicPipePart/face0",
+        "BasicPipePart/face1",
+        "BasicPipePart/face2",
+        "BasicPipePart/face3",
+        "BasicPipePart/face4",
+        "BasicPipePart/face5",
+        "RoutedJunctionPipePart/face0",
+        "RoutedJunctionPipePart/face1",
+        "RoutedJunctionPipePart/face2",
+        "RoutedJunctionPipePart/face3",
+        "RoutedJunctionPipePart/face4",
+        "RoutedJunctionPipePart/face5",
+        "RoutedInterfacePipePart/face0",
+        "RoutedInterfacePipePart/face1",
+        "RoutedInterfacePipePart/face2",
+        "RoutedInterfacePipePart/face3",
+        "RoutedInterfacePipePart/face4",
+        "RoutedInterfacePipePart/face5",
+        "PressureTube/face0",
+        "PressureTube/face1",
+        "PressureTube/face2",
+        "PressureTube/face3",
+        "PressureTube/face4",
+        "PressureTube/face5",
+        "ResistanceTube/face0",
+        "ResistanceTube/face1",
+        "ResistanceTube/face2",
+        "ResistanceTube/face3",
+        "ResistanceTube/face4",
+        "ResistanceTube/face5",
+        "NetworkValvePipePart/face0",
+        "NetworkValvePipePart/face1",
+        "NetworkValvePipePart/face2",
+        "NetworkValvePipePart/face3",
+        "NetworkValvePipePart/face4",
+        "NetworkValvePipePart/face5",
+        "NetworkLatencyPipePart/face0",
+        "NetworkLatencyPipePart/face1",
+        "NetworkLatencyPipePart/face2",
+        "NetworkLatencyPipePart/face3",
+        "NetworkLatencyPipePart/face4",
+        "NetworkLatencyPipePart/face5",
+        "inventory/face0",
+        "inventory/face1",
+        "inventory/face2",
+        "inventory/face3",
+        "inventory/face4",
+        "inventory/face5",
+        "solid_cover_still_blocks",
+        "legacy_new_pair",
+        "native_route_cut_and_restore",
+        "in_flight_disconnect_preserves_items"
+      ]
+    },
+    "NativeRouting": {
+      "source_ip": 33,
+      "fallback_ip": 34,
+      "target_ip": 35,
+      "adjacent_interface_hop_to_target": 5,
+      "interface_branch_hop": 3,
+      "full_inventory_accepted": false,
+      "bounce_output": 4,
+      "bounce_destination": 34,
+      "bounce_travel_log": "BitSet(35)",
+      "old_target_reserved_after_bounce": 0,
+      "partial_fully_accepted": false,
+      "partial_remaining": 3,
+      "partial_remaining_reservation": 3,
+      "two_interfaces_left_inventory_side": 4,
+      "two_interfaces_right_inventory_side": 5,
+      "two_interfaces_deliver_both_directions": [
+        true,
+        true
+      ],
+      "original_peer_version_accepted": {
+        "ProjRed|Illumination": true,
+        "ProjRed|Integration": true,
+        "ProjRed|Expansion": true,
+        "ProjRed|Transportation": true,
+        "ProjRed|Core": true,
+        "ProjRed|Fabrication": true,
+        "ProjRed|Transmission": true,
+        "ProjRed|Compatibility": true,
+        "ProjRed|Exploration": true
+      },
+      "completed": true
+    },
+    "NativeInteractions": {
+      "current_held": "1xgt.metatool.01@16",
+      "wrench_usable": true,
+      "native_right_click_pipeline": true,
+      "native_edit_check_respected": true,
+      "persistence_fixture_prepared": true,
+      "assertions": 13,
+      "passed": true
+    },
+    "NativeGridPlacement": {
+      "native_gt_coordinate_comparisons": 34992,
+      "passed": true,
+      "assertions": 35521,
+      "cases": [
+        "gt_quarter_boundaries_and_float_wrapping",
+        "all_54_cells_toggle_actual_connections",
+        "native_corner_click_nonwrench_and_projectile_selection",
+        "42_native_pipe_support_placements",
+        "18_native_inventory_support_placements",
+        "solid_support_stays_disconnected",
+        "incompatible_support_stays_disconnected",
+        "covered_support_stays_disconnected",
+        "same_cell_multipart_does_not_auto_link",
+        "failed_placement_is_side_effect_free",
+        "disabled_placement_link_prepared_for_cold_reload"
+      ]
+    },
+    "NativeColdConnections": {
+      "passed": true,
+      "native_save_stop_start_load": true,
+      "assertions": 14
+    },
+    "NativeGridCold": {
+      "passed": true,
+      "assertions": 127,
+      "saved_support_pairs": 42,
+      "disabled_link_stays_disabled": true
+    }
+  },
+  "limits": [
+    "Native dedicated server classes; graphical Windows interaction and GPU rendering are not measured",
+    "Native Minecraft edit checks are retained; third-party claim protections are not exhaustively tested",
+    "GL state/geometry uses offscreen Mesa; no complete Windows/Angelica visual interaction test"
+  ],
+  "release": "4.12.50-GTNH-krahsu.3",
+  "junit_tests": 23,
+  "offscreen_gl": {
+    "passed": true,
+    "faces_rendered": 6,
+    "state_checks": 132,
+    "nonblack_pixels": 27444,
+    "gl_renderer": "llvmpipe (LLVM 20.1.2, 256 bits)",
+    "limits": "Offscreen OpenGL; not a full GTNH/Angelica or Windows client test"
+  },
+  "render_regression": {
+    "passed": true,
+    "variants": [
+      {
+        "variant": "original",
+        "cases": 2368,
+        "vertex_fingerprint": "f21eeb6b6d61672e",
+        "geometry_fingerprint": "e674afdc1fd176ad",
+        "check_model_constructions": 2304,
+        "benchmark_model_constructions": 105000,
+        "median_ns_per_pipe": 57346.65,
+        "allocated_bytes_per_pipe": 198748.4,
+        "measured_pipe_calls": 35000,
+        "boundary": "real ProjectRed and CCL; test world/icons and captured Tessellator; no GPU or Angelica"
+      },
+      {
+        "variant": "patched",
+        "cases": 2368,
+        "vertex_fingerprint": "f21eeb6b6d61672e",
+        "geometry_fingerprint": "e674afdc1fd176ad",
+        "check_model_constructions": 0,
+        "benchmark_model_constructions": 0,
+        "median_ns_per_pipe": 3948.76,
+        "allocated_bytes_per_pipe": 274.67,
+        "measured_pipe_calls": 35000,
+        "boundary": "real ProjectRed and CCL; test world/icons and captured Tessellator; no GPU or Angelica"
+      }
+    ],
+    "cpu_path_speedup": 14.522698264771725,
+    "allocation_reduction_percent": 99.86180014530935,
+    "limits": [
+      "Synthetic world/icons and Tessellator sink, real ProjectRed/CCL CPU code",
+      "Not a full GTNH/Angelica GPU test or measured Windows FPS"
+    ]
+  }
+}

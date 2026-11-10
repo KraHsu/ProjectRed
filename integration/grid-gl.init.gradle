@@ -1,0 +1,8 @@
+allprojects {
+    tasks.register('writeWrenchTestClasspath') {
+        doLast {
+            new File(rootDir, 'build/wrench-test-classpath.txt').text =
+                (sourceSets.test.compileClasspath + sourceSets.test.runtimeClasspath).asPath
+        }
+    }
+}

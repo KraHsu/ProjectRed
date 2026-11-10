@@ -1,7 +1,7 @@
 package mrtjp.projectred.transportation
 
 import codechicken.lib.data.{MCDataInput, MCDataOutput}
-import codechicken.lib.raytracer.{ExtendedMOP, IndexedCuboid6}
+import codechicken.lib.raytracer.{ExtendedMOP, IndexedCuboid6, RayTracer}
 import codechicken.lib.render.{CCRenderState, TextureUtils}
 import codechicken.lib.vec.{BlockCoord, Cuboid6, Rotation, Vector3}
 import codechicken.microblock.ISidedHollowConnect
@@ -14,10 +14,10 @@ import mrtjp.core.inventory.InvWrapper
 import net.minecraft.client.renderer.RenderBlocks
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
+import net.minecraft.inventory.IInventory
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
-import net.minecraft.util.{ChatComponentText, MovingObjectPosition}
+import net.minecraft.util.{ChatComponentText, MovingObjectPosition, Vec3}
 import net.minecraftforge.common.util.ForgeDirection
-import net.minecraftforge.oredict.OreDictionary
 
 import scala.collection.JavaConversions._
 
@@ -32,6 +32,7 @@ abstract class SubcorePipePart
   // Missing NBT means a legacy pipe: retain all six automatic connections.
   // Only actual item placement opts into the new, initially closed policy.
   private var connectionMask = 0x3f
+  private var placementSupportSide = -1
 
   def connectionOpen(side: Int): Boolean =
     side >= 0 && side < 6 && (connectionMask & (1 << side)) != 0
@@ -42,6 +43,10 @@ abstract class SubcorePipePart
   def preparePlacement(side: Int, meta: Int) {
     this.meta = meta.asInstanceOf[Byte]
     connectionMask = 0
+  }
+
+  def prepareSupportConnection(side: Int) {
+    placementSupportSide = if (side >= 0 && side < 6) side else -1
   }
 
   override def save(tag: NBTTagCompound) {
@@ -78,6 +83,15 @@ abstract class SubcorePipePart
     // Clicking either end must connect that pair on the first click.
     val open =
       !(connectionOpen(side) && adjacent.forall(_.connectionOpen(side ^ 1)))
+    changeConnection(side, open, adjacent)
+    open
+  }
+
+  private def changeConnection(
+      side: Int,
+      open: Boolean,
+      adjacent: Option[SubcorePipePart]
+  ) {
     setConnectionOpen(side, open)
     adjacent.foreach(_.setConnectionOpen(side ^ 1, open))
     val changed = Seq(this) ++ adjacent
@@ -91,7 +105,25 @@ abstract class SubcorePipePart
       case n: TNetworkPipe if !n.needsWork => n.getRouter.update(true)
       case _                               =>
     }
-    open
+  }
+
+  private def connectPlacementSupport() {
+    val side = placementSupportSide
+    placementSupportSide = -1 // never replay on chunk reload or conversion
+    if (side < 0 || !discoverOpen(side)) return
+    getStraight(side) match {
+      case p: SubcorePipePart
+          if p.discoverOpen(side ^ 1) && canConnectPart(p, side) &&
+            p.canConnectPart(this, side ^ 1) =>
+        changeConnection(side, true, Some(p))
+      case null =>
+        val pos = posOfStraight(side)
+        if (
+          world.getTileEntity(pos.x, pos.y, pos.z).isInstanceOf[IInventory] &&
+          discoverStraightOverride(side)
+        ) changeConnection(side, true, None)
+      case _ =>
+    }
   }
 
   override def activate(
@@ -99,20 +131,8 @@ abstract class SubcorePipePart
       hit: MovingObjectPosition,
       held: ItemStack
   ): Boolean = {
-    if (
-      held == null || !OreDictionary
-        .getOreIDs(held)
-        .exists(id => OreDictionary.getOreName(id) == "craftingToolWrench")
-    ) return super.activate(player, hit, held)
-
-    // An arm selects its connection, irrespective of which surface was hit.
-    val side = hit match {
-      case m: ExtendedMOP
-          if m.data.isInstanceOf[Int] &&
-            (0 until 6 contains m.data.asInstanceOf[Int]) =>
-        m.data.asInstanceOf[Int]
-      case _ => hit.sideHit
-    }
+    if (!PipeWrenchGrid.isWrench(held)) return super.activate(player, hit, held)
+    val side = PipeWrenchGrid.hitSide(hit)
     if (side < 0 || side >= 6) return false
     if (!world.isRemote) {
       val pos = posOfStraight(side)
@@ -177,6 +197,37 @@ abstract class SubcorePipePart
   override def onAdded() {
     super.onAdded()
     if (!world.isRemote) if (updateInward()) sendConnUpdate()
+    if (!world.isRemote) connectPlacementSupport()
+  }
+
+  override def collisionRayTrace(start: Vec3, end: Vec3): ExtendedMOP = {
+    if (!PipeWrenchGrid.isWrenchRay(world, start))
+      return super.collisionRayTrace(start, end)
+    val pos = new Vector3(x, y, z)
+    val hit = RayTracer.instance.rayTraceCuboid(
+      new Vector3(start).subtract(pos),
+      new Vector3(end).subtract(pos),
+      Cuboid6.full
+    )
+    if (hit == null) null
+    else {
+      val result =
+        new ExtendedMOP(x, y, z, hit.sideHit, hit.hitVec.addVector(x, y, z), -1)
+      result.dist = start.squareDistanceTo(result.hitVec)
+      result
+    }
+  }
+
+  @SideOnly(Side.CLIENT)
+  override def drawHighlight(
+      hit: MovingObjectPosition,
+      player: EntityPlayer,
+      frame: Float
+  ): Boolean = {
+    if (!PipeWrenchGrid.isWrench(player.getHeldItem))
+      return super.drawHighlight(hit, player, frame)
+    PipeWrenchRenderer.draw(this, hit, player, frame)
+    true
   }
 
   override def onRemoved() {

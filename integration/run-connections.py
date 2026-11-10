@@ -16,7 +16,7 @@ for name in ['config','serverutilities','libraries','mods']:
 for name in ['lwjgl3ify-forgePatches.jar','minecraft_server.1.7.10.jar','forge-1.7.10-10.13.4.1614-1.7.10-universal.jar','java9args.txt']:
     shutil.copy2(source/name,run/name)
 for jar in (run/'mods').glob('*.jar'):
-    if any(s in jar.name.lower() for s in ['projred','projectred','seedroller','seed-roller','routing-test-harness','runtimecompatchecks']):jar.unlink()
+    if any(s in jar.name.lower() for s in ['projred','projectred','routing-test-harness','runtimecompatchecks']) or ('seed' in jar.name.lower() and 'roller' in jar.name.lower()):jar.unlink()
 shutil.copy2(candidate,run/'mods/ProjRed-4.12.50-GTNH.jar')
 (run/'eula.txt').write_text('eula=true\n')
 (run/'server.properties').write_text('server-ip=127.0.0.1\nserver-port=0\nlevel-name=RoutingTestWorld\nlevel-type=FLAT\ngenerator-settings=2;7,2x3,2;1;\nmax-tick-time=-1\nonline-mode=false\nwhite-list=false\nview-distance=2\ngenerate-structures=false\nspawn-protection=0\n')
@@ -46,7 +46,7 @@ def request(name,process):
         assert len(result['original_peer_version_accepted'])==9 and all(result['original_peer_version_accepted'].values()),result
     else:assert result.get('passed'),result
     results[name]=result;print(name,'PASS',flush=True)
-for cold,names in [(False,['NativeConnections','NativeRouting','NativeInteractions']),(True,['NativeColdConnections'])]:
+for cold,names in [(False,['NativeConnections','NativeRouting','NativeInteractions','NativeGridPlacement']),(True,['NativeColdConnections','NativeGridCold'])]:
     (checks/'ready').unlink(missing_ok=True);(checks/'stop').unlink(missing_ok=True)
     with (run/('cold.log' if cold else 'warm.log')).open('w') as log:
         process=subprocess.Popen([str(a.java_home/'bin/java'),'-Xms2G','-Xmx8G','-Duser.language=en','-Djava.awt.headless=true','@java9args.txt','-jar','lwjgl3ify-forgePatches.jar','nogui'],cwd=run,stdout=log,stderr=subprocess.STDOUT)

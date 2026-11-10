@@ -12,6 +12,7 @@ import mrtjp.projectred.Tags
 import net.minecraftforge.client.MinecraftForgeClient
 
 class TransportationProxy_server extends IProxy with IPartFactory {
+  def clientWrenchSelection: Boolean = false
   val guiIDInterfacePipe = 5
   val guiIDFirewallPipe = 6
   val guiIDRoutingChips = 7
@@ -69,6 +70,8 @@ class TransportationProxy_server extends IProxy with IPartFactory {
 }
 
 class TransportationProxy_client extends TransportationProxy_server {
+  @SideOnly(Side.CLIENT)
+  override def clientWrenchSelection: Boolean = PipeWrenchRenderer.isWrenchHeld
   @SideOnly(Side.CLIENT)
   override def preinit() {
     super.preinit()

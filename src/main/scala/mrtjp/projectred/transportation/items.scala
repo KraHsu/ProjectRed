@@ -30,6 +30,31 @@ class ItemPartPipe
   setHasSubtypes(true)
   setCreativeTab(ProjectRedTransportation.tabTransportation)
 
+  // FMP may place inside the clicked multipart cell or in the adjacent cell.
+  // Keep the actual clicked coordinate scoped to this item-use invocation.
+  private val placementOrigin = new ThreadLocal[BlockCoord]
+
+  override def onItemUse(
+      item: ItemStack,
+      player: EntityPlayer,
+      world: World,
+      x: Int,
+      y: Int,
+      z: Int,
+      side: Int,
+      hitX: Float,
+      hitY: Float,
+      hitZ: Float
+  ): Boolean = {
+    val previous = placementOrigin.get()
+    placementOrigin.set(new BlockCoord(x, y, z))
+    try super.onItemUse(item, player, world, x, y, z, side, hitX, hitY, hitZ)
+    finally {
+      if (previous == null) placementOrigin.remove()
+      else placementOrigin.set(previous)
+    }
+  }
+
   def newPart(
       item: ItemStack,
       player: EntityPlayer,
@@ -42,7 +67,16 @@ class ItemPartPipe
     val p = MultiPartRegistry
       .createPart(pdef.partname, false)
       .asInstanceOf[PayloadPipePart[_]]
-    if (p != null) p.preparePlacement(side, item.getItemDamage)
+    if (p != null) {
+      p.preparePlacement(side, item.getItemDamage)
+      val support = placementOrigin.get()
+      if (
+        support != null && side >= 0 && side < 6 &&
+        new BlockCoord(support.x, support.y, support.z).offset(side) == pos &&
+        player.canPlayerEdit(support.x, support.y, support.z, side, item)
+      )
+        p.prepareSupportConnection(side ^ 1)
+    }
     p
   }
 
@@ -52,6 +86,7 @@ class ItemPartPipe
     for (t <- PipeDefs.values) l2.add(t.makeStack)
   }
 
+  @SideOnly(Side.CLIENT)
   override def registerIcons(reg: IIconRegister) {
     for (p <- PipeDefs.values) p.registerIcon(reg)
   }
