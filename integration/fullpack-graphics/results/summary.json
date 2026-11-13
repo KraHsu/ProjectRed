@@ -1,0 +1,116 @@
+{
+  "passed": true,
+  "source_commit": "9a619a135931b0d800e0bf01d27bd2abb3584353",
+  "pack": "Official GTNH 2.9.0 MultiMC/Prism Java 17-26",
+  "official_zip_sha256": "6d0ebe7e6be18fb74b4fc920916cc5710e142a3f885072d324da05244d398b16",
+  "variants": {
+    "baseline": {
+      "status": "passed",
+      "loaded_mod_count": 324,
+      "projectred_sha256": "db2dde71cc9276c62b4c6f131f6155a319633c86419c9c01dca616c3f29dd642",
+      "helper_sha256": "368fec6f5548cfd7857d07e94725b36f6fda98ad92f48e3b9501ec72167df20d",
+      "scene": {
+        "world_basic_and_junction_samples": 144,
+        "redstone_overlay_samples": 16,
+        "fullpack_pipe_crafting_recipe_counts": {
+          "0": 18,
+          "1": 1,
+          "2": 1,
+          "3": 0,
+          "4": 1,
+          "5": 0,
+          "6": 0,
+          "7": 0,
+          "8": 0,
+          "9": 0,
+          "10": 0
+        },
+        "unrelated_recipe_output_errors": 0,
+        "wool_overlay_scope": "Excluded from full-pack pass criteria; previously covered in development regression tests",
+        "native_item_flow_client_ticks": 34,
+        "redstone_overlay_client_sync": true,
+        "resource_reload_completed": true,
+        "empty_render_state_checks": 8176,
+        "save_reopen_redstone_and_transport": true,
+        "status": "passed"
+      },
+      "drawer_transport": {
+        "logical_drawers_per_controller": 32,
+        "initial_total": 8224,
+        "one_item_adapter_transfer": true,
+        "native_source": 7231,
+        "native_target": 993,
+        "native_total": 8224,
+        "native_extractor_delivery": true,
+        "cold_reload_total": 8224
+      },
+      "gl_renderer": "Radeon 8060S Graphics (radeonsi, gfx1151, LLVM 20.1.2, DRM 3.64, 7.0.0-34-generic)",
+      "gl_version": "4.6 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.4",
+      "java": "25.0.4.1+1-LTS",
+      "stock_mod_jars_verified": 242,
+      "angelica_version": "2.2.43",
+      "auto_downloaded_runtime_dependencies": {
+        "EJML-core-0.26.jar": "ee7840eb553b850bdb32ed5be6194936f02f2cb2c9b915e4996312ec4a812588"
+      }
+    },
+    "candidate": {
+      "status": "passed",
+      "loaded_mod_count": 324,
+      "projectred_sha256": "e86e94e869cb0e1e7c17d46eb19f7e704b0ae3906565927b02cb4d6684078867",
+      "helper_sha256": "368fec6f5548cfd7857d07e94725b36f6fda98ad92f48e3b9501ec72167df20d",
+      "scene": {
+        "world_basic_and_junction_samples": 144,
+        "redstone_overlay_samples": 16,
+        "fullpack_pipe_crafting_recipe_counts": {
+          "0": 18,
+          "1": 1,
+          "2": 1,
+          "3": 0,
+          "4": 1,
+          "5": 0,
+          "6": 0,
+          "7": 0,
+          "8": 0,
+          "9": 0,
+          "10": 0
+        },
+        "unrelated_recipe_output_errors": 0,
+        "wool_overlay_scope": "Excluded from full-pack pass criteria; previously covered in development regression tests",
+        "native_item_flow_client_ticks": 35,
+        "redstone_overlay_client_sync": true,
+        "resource_reload_completed": true,
+        "empty_render_state_checks": 7487,
+        "save_reopen_redstone_and_transport": true,
+        "status": "passed"
+      },
+      "drawer_transport": {
+        "logical_drawers_per_controller": 32,
+        "initial_total": 8224,
+        "one_item_adapter_transfer": true,
+        "native_source": 7231,
+        "native_target": 993,
+        "native_total": 8224,
+        "native_extractor_delivery": true,
+        "cold_reload_total": 8224
+      },
+      "gl_renderer": "Radeon 8060S Graphics (radeonsi, gfx1151, LLVM 20.1.2, DRM 3.64, 7.0.0-34-generic)",
+      "gl_version": "4.6 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.4",
+      "java": "25.0.4.1+1-LTS",
+      "stock_mod_jars_verified": 242,
+      "angelica_version": "2.2.43",
+      "auto_downloaded_runtime_dependencies": {
+        "EJML-core-0.26.jar": "ee7840eb553b850bdb32ed5be6194936f02f2cb2c9b915e4996312ec4a812588"
+      }
+    }
+  },
+  "image_comparisons": 44,
+  "candidate_sampler_state_checks": 132,
+  "candidate_gallery_state_checks": 66,
+  "wool_scope": "Wool-dyed pressure tubes excluded from full-pack pass criteria; existing development tests cover the model. Both full-pack crafting lists contain zero recipes for pipe metadata 7 and 8; this alone does not prove the code is disabled or exclude every possible machine recipe.",
+  "limits": [
+    "Linux/Radeon/Mesa with Angelica; Windows GPU drivers not exercised",
+    "Targeted graphical and integrated-server functional checks, not an exhaustive all-mod or performance benchmark",
+    "Stock-pack logs contain unrelated recipe, texture, Discord and shutdown warnings; raw logs are retained",
+    "No production server files, worlds or processes were changed"
+  ]
+}

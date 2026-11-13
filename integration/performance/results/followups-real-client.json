@@ -1,0 +1,15 @@
+{
+  "native_automatic_connections": true,
+  "transport_64_coal_exactly_once": true,
+  "client_ticks_with_synced_payloads": 118,
+  "real_integrated_world": true,
+  "wool_colors_received": 16,
+  "redstone_and_inventory_render_fixture": true,
+  "resource_reload_completed": true,
+  "empty_render_state_checks": 4755,
+  "variant": "followups",
+  "gl_renderer": "Radeon 8060S Graphics (radeonsi, gfx1151, LLVM 20.1.2, DRM 3.64, 7.0.0-34-generic)",
+  "gl_version": "4.6 (Compatibility Profile) Mesa 25.2.8-0ubuntu0.24.04.4",
+  "cold_reload_inventory_color_connections": true,
+  "status": "passed"
+}

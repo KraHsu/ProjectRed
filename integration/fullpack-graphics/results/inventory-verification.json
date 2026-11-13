@@ -1,0 +1,552 @@
+{
+  "passed": true,
+  "baseline": {
+    "completed": true,
+    "state_checks": 66,
+    "gallery_state_checks": 66,
+    "transition_state_checks": 0,
+    "comparisons": [
+      {
+        "scale": 1,
+        "incoming_sampler": 1,
+        "meta": 0,
+        "changed_pixels": 59
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 1,
+        "meta": 1,
+        "changed_pixels": 69
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 1,
+        "meta": 2,
+        "changed_pixels": 69
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 1,
+        "meta": 3,
+        "changed_pixels": 69
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 1,
+        "meta": 4,
+        "changed_pixels": 69
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 1,
+        "meta": 5,
+        "changed_pixels": 69
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 1,
+        "meta": 6,
+        "changed_pixels": 68
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 1,
+        "meta": 7,
+        "changed_pixels": 72
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 1,
+        "meta": 8,
+        "changed_pixels": 74
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 1,
+        "meta": 9,
+        "changed_pixels": 73
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 1,
+        "meta": 10,
+        "changed_pixels": 66
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 2,
+        "meta": 0,
+        "changed_pixels": 64
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 2,
+        "meta": 1,
+        "changed_pixels": 73
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 2,
+        "meta": 2,
+        "changed_pixels": 73
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 2,
+        "meta": 3,
+        "changed_pixels": 73
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 2,
+        "meta": 4,
+        "changed_pixels": 73
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 2,
+        "meta": 5,
+        "changed_pixels": 73
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 2,
+        "meta": 6,
+        "changed_pixels": 73
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 2,
+        "meta": 7,
+        "changed_pixels": 73
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 2,
+        "meta": 8,
+        "changed_pixels": 73
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 2,
+        "meta": 9,
+        "changed_pixels": 75
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 2,
+        "meta": 10,
+        "changed_pixels": 70
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 1,
+        "meta": 0,
+        "changed_pixels": 61
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 1,
+        "meta": 1,
+        "changed_pixels": 97
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 1,
+        "meta": 2,
+        "changed_pixels": 97
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 1,
+        "meta": 3,
+        "changed_pixels": 97
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 1,
+        "meta": 4,
+        "changed_pixels": 97
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 1,
+        "meta": 5,
+        "changed_pixels": 97
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 1,
+        "meta": 6,
+        "changed_pixels": 95
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 1,
+        "meta": 7,
+        "changed_pixels": 78
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 1,
+        "meta": 8,
+        "changed_pixels": 95
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 1,
+        "meta": 9,
+        "changed_pixels": 143
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 1,
+        "meta": 10,
+        "changed_pixels": 51
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 2,
+        "meta": 0,
+        "changed_pixels": 94
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 2,
+        "meta": 1,
+        "changed_pixels": 168
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 2,
+        "meta": 2,
+        "changed_pixels": 168
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 2,
+        "meta": 3,
+        "changed_pixels": 168
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 2,
+        "meta": 4,
+        "changed_pixels": 168
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 2,
+        "meta": 5,
+        "changed_pixels": 168
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 2,
+        "meta": 6,
+        "changed_pixels": 168
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 2,
+        "meta": 7,
+        "changed_pixels": 140
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 2,
+        "meta": 8,
+        "changed_pixels": 182
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 2,
+        "meta": 9,
+        "changed_pixels": 203
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 2,
+        "meta": 10,
+        "changed_pixels": 132
+      }
+    ]
+  },
+  "candidate": {
+    "completed": true,
+    "state_checks": 132,
+    "gallery_state_checks": 66,
+    "transition_state_checks": 66,
+    "comparisons": [
+      {
+        "scale": 1,
+        "incoming_sampler": 1,
+        "meta": 0,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 1,
+        "meta": 1,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 1,
+        "meta": 2,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 1,
+        "meta": 3,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 1,
+        "meta": 4,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 1,
+        "meta": 5,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 1,
+        "meta": 6,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 1,
+        "meta": 7,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 1,
+        "meta": 8,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 1,
+        "meta": 9,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 1,
+        "meta": 10,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 2,
+        "meta": 0,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 2,
+        "meta": 1,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 2,
+        "meta": 2,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 2,
+        "meta": 3,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 2,
+        "meta": 4,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 2,
+        "meta": 5,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 2,
+        "meta": 6,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 2,
+        "meta": 7,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 2,
+        "meta": 8,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 2,
+        "meta": 9,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 1,
+        "incoming_sampler": 2,
+        "meta": 10,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 1,
+        "meta": 0,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 1,
+        "meta": 1,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 1,
+        "meta": 2,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 1,
+        "meta": 3,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 1,
+        "meta": 4,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 1,
+        "meta": 5,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 1,
+        "meta": 6,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 1,
+        "meta": 7,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 1,
+        "meta": 8,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 1,
+        "meta": 9,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 1,
+        "meta": 10,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 2,
+        "meta": 0,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 2,
+        "meta": 1,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 2,
+        "meta": 2,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 2,
+        "meta": 3,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 2,
+        "meta": 4,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 2,
+        "meta": 5,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 2,
+        "meta": 6,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 2,
+        "meta": 7,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 2,
+        "meta": 8,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 2,
+        "meta": 9,
+        "changed_pixels": 0
+      },
+      {
+        "scale": 2,
+        "incoming_sampler": 2,
+        "meta": 10,
+        "changed_pixels": 0
+      }
+    ]
+  },
+  "limits": [
+    "Complete official GTNH 2.9.0 Java 17-26 client with Angelica on Linux/Mesa; Windows GPU stack not exercised",
+    "Pixels compare native Forge inventory rendering under controlled sampler states; user hotbar movement remains a manual Windows check",
+    "No connection to or restart of the production server"
+  ]
+}

@@ -1,0 +1,162 @@
+{
+  "regressions": {
+    "zero_request_count_updates": 200,
+    "nbt_and_metadata_mismatch": true,
+    "cross_drawer_partial_extraction": true,
+    "populated_before_empty_insertion": true,
+    "locked_prototype_preserved": true,
+    "void_overflow": true,
+    "vending_extraction": true,
+    "compacting_drawers_enabled": false,
+    "ore_conversion_enabled": false
+  },
+  "wrapper": "mrtjp.projectred.compatibility.storagedrawers.StorageDrawersInvWrapper",
+  "controller_range": 4,
+  "controller_max_drawer_blocks": 50,
+  "final_source_coal": 48000,
+  "final_target_coal": 3400,
+  "native_final_total": 51400,
+  "one_item_pulses": 400,
+  "status": "passed",
+  "client_total_matches": true,
+  "variant": "baseline",
+  "phases": [
+    {
+      "phase": "idle",
+      "server_tick_wall": {
+        "samples": 400,
+        "mean_ms": 0.44944016999999953,
+        "p50_ms": 0.431766,
+        "p95_ms": 0.776633,
+        "p99_ms": 1.174403,
+        "max_ms": 1.944914
+      },
+      "server_tick_cpu": {
+        "samples": 400,
+        "mean_ms": 0.44794196749999954,
+        "p50_ms": 0.430387,
+        "p95_ms": 0.768221,
+        "p99_ms": 1.175284,
+        "max_ms": 1.943164
+      },
+      "client_frames": {
+        "samples": 3265,
+        "mean_ms": 6.124170221133239,
+        "p50_ms": 6.049005,
+        "p95_ms": 6.655233,
+        "p99_ms": 7.380717,
+        "max_ms": 95.772992
+      },
+      "focused_frames": 3266,
+      "count_updates_emitted": 0,
+      "count_updates_received": 0,
+      "count_payload_bytes_received": 0,
+      "source_start_end": [
+        51200,
+        51200
+      ],
+      "target_start_end": [
+        200,
+        200
+      ]
+    },
+    {
+      "phase": "one_item_per_tick",
+      "server_tick_wall": {
+        "samples": 400,
+        "mean_ms": 0.8280027050000001,
+        "p50_ms": 0.674432,
+        "p95_ms": 1.226275,
+        "p99_ms": 3.014853,
+        "max_ms": 31.592336
+      },
+      "server_tick_cpu": {
+        "samples": 400,
+        "mean_ms": 0.8187113475000005,
+        "p50_ms": 0.671098,
+        "p95_ms": 1.225759,
+        "p99_ms": 3.014493,
+        "max_ms": 30.11261
+      },
+      "client_frames": {
+        "samples": 3268,
+        "mean_ms": 6.118629351897175,
+        "p50_ms": 6.052842,
+        "p95_ms": 6.494869,
+        "p99_ms": 7.306111,
+        "max_ms": 94.205517
+      },
+      "focused_frames": 3269,
+      "count_updates_emitted": 80255,
+      "count_updates_received": 80255,
+      "count_payload_bytes_received": 1284080,
+      "source_start_end": [
+        51200,
+        50800
+      ],
+      "target_start_end": [
+        200,
+        600
+      ]
+    },
+    {
+      "phase": "native_extractor_chip",
+      "server_tick_wall": {
+        "samples": 400,
+        "mean_ms": 0.5277124124999997,
+        "p50_ms": 0.411286,
+        "p95_ms": 1.144635,
+        "p99_ms": 1.822565,
+        "max_ms": 7.605898
+      },
+      "server_tick_cpu": {
+        "samples": 400,
+        "mean_ms": 0.5027221550000003,
+        "p50_ms": 0.407515,
+        "p95_ms": 1.124559,
+        "p99_ms": 1.633985,
+        "max_ms": 2.046478
+      },
+      "client_frames": {
+        "samples": 3265,
+        "mean_ms": 6.1241364643185285,
+        "p50_ms": 6.049706,
+        "p95_ms": 6.559165,
+        "p99_ms": 7.497295,
+        "max_ms": 111.864875
+      },
+      "focused_frames": 3266,
+      "count_updates_emitted": 7753,
+      "count_updates_received": 7753,
+      "count_payload_bytes_received": 124048,
+      "source_start_end": [
+        50560,
+        48000
+      ],
+      "target_start_end": [
+        712,
+        3272
+      ]
+    }
+  ],
+  "world": "DrawerBench_baseline_1794347504217",
+  "java": "1.8.0_504-b01",
+  "gl_renderer": "Radeon 8060S Graphics (radeonsi, gfx1151, LLVM 20.1.2, DRM 3.64, 7.0.0-34-generic)",
+  "gl_version": "4.6 (Compatibility Profile) Mesa 25.2.8-0ubuntu0.24.04.4",
+  "scene_drawer_blocks": 100,
+  "scene_logical_drawers": 400,
+  "phase_ticks": 400,
+  "view_distance_chunks": 4,
+  "vsync": false,
+  "frame_limit_setting": 260,
+  "resolution": [
+    854,
+    480
+  ],
+  "storage_drawers_version": "2.2.31-GTNH",
+  "limits": [
+    "Development client with real drawers, controllers and PR pipes/chips, not full GTNH/Angelica client",
+    "Integrated server CPU/wall tick measures and local client frame times; no remote Internet latency measured",
+    "Count payload bytes exclude Minecraft framing, compression, IP/TCP and other packet types"
+  ]
+}

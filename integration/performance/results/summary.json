@@ -1,0 +1,52 @@
+{
+  "status": "passed",
+  "variants": {
+    "cache": {
+      "source_commit": "08df35e48fee61d2108dc0afbd39cdbdacfc5502",
+      "artifact_sha256": "c35a25a0ba12730709e8ea833cb687fc2f1d0113758bb8e1a42c569348794599",
+      "build": "test build including Spotless and Checkstyle passed",
+      "unit_tests": {
+        "tests": 20,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "real_client_report": "cache-real-client.json",
+      "dedicated_server_report": "cache-fullpack-server.json"
+    },
+    "followups": {
+      "source_commit": "8337b995920cc69ed6c348d7cf80db03f550ee11",
+      "artifact_sha256": "577077bc92040b0895cfe558b1a9a01795e560572681fcc9dff65b604850b670",
+      "build": "test build including Spotless and Checkstyle passed",
+      "unit_tests": {
+        "tests": 27,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "real_client_report": "followups-real-client.json",
+      "dedicated_server_report": "followups-fullpack-server.json"
+    }
+  },
+  "runtimes": {
+    "build_and_server": "openjdk version \"25.0.4.1\" 2026-08-18 LTS\nOpenJDK Runtime Environment Temurin-25.0.4.1+1 (build 25.0.4.1+1-LTS)\nOpenJDK 64-Bit Server VM Temurin-25.0.4.1+1 (build 25.0.4.1+1-LTS, mixed mode, sharing)",
+    "development_client": "openjdk version \"1.8.0_504\"\nOpenJDK Runtime Environment (Temurin)(build 1.8.0_504-b01)\nOpenJDK 64-Bit Server VM (Temurin)(build 25.504-b01, mixed mode)"
+  },
+  "client_mod_set": "Forge 1.7.10 with ProjectRed development runtime dependencies (30 mods); not full GTNH client or Angelica",
+  "scenes": {
+    "pipes": 168,
+    "wool_colors": 16,
+    "coal_delivered": 64,
+    "resource_reload": true,
+    "world_close_reopen": true
+  },
+  "scope": [
+    "No GT wrench/manual-connection/gameplay-routing changes in either contribution build",
+    "Fullpack means GTNH 2.9.0 dedicated-server tests; graphical tests use the development client",
+    "No whole-game FPS, GPU speedup, or server TPS gain claimed",
+    "No production server changes or restart"
+  ],
+  "fixture_failure_notes": [
+    "Initial native fixture read getRouter before first update and used an unmangled private Scala field name; the fixture was corrected and rerun. These failures were not mod defects."
+  ]
+}

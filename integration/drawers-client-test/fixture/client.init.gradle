@@ -1,0 +1,17 @@
+allprojects {
+    afterEvaluate {
+        dependencies.add('runtimeOnlyNonPublishable', 'com.github.GTNewHorizons:StorageDrawers:2.2.31-GTNH:dev')
+        def fixture = sourceSets.create('drawerClientTest')
+        fixture.java.srcDir(file(project.findProperty('drawerTestRoot') + '/client'))
+        fixture.compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath + sourceSets.main.runtimeClasspath
+        fixture.runtimeClasspath += fixture.output + fixture.compileClasspath
+        tasks.named('runClient', JavaExec) {
+            dependsOn fixture.classesTaskName
+            classpath += fixture.output
+            systemProperty 'drawertest.variant', project.findProperty('drawerVariant') ?: 'baseline'
+            systemProperty 'drawertest.output', project.findProperty('drawerOutput') ?: file('build/drawer-client-test').absolutePath
+            systemProperty 'drawertest.ticks', project.findProperty('drawerTicks') ?: '400'
+            maxHeapSize = '5G'
+        }
+    }
+}

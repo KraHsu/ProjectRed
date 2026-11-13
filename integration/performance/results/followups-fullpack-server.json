@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "candidate_sha256": "577077bc92040b0895cfe558b1a9a01795e560572681fcc9dff65b604850b670",
+  "results": {
+    "NativeContribution": {
+      "dyed_pressure_and_resistance_delivery_64": true,
+      "registered_unique_native_routers": 64,
+      "unused_version_sentinels_preserved": true,
+      "equal_filter_copy_found": true,
+      "set_size_after_equal_copy": 8,
+      "passed": true
+    },
+    "NativeContributionCold": {
+      "cold_inventory_and_dyed_tubes": true,
+      "passed": true
+    }
+  },
+  "limits": [
+    "Full GTNH dedicated-server integration; not a full GTNH/Angelica client FPS test",
+    "Native Minecraft edit checks are retained; third-party claim protections are not exhaustively tested"
+  ]
+}

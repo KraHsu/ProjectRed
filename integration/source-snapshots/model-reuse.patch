@@ -1,0 +1,34 @@
+diff --git a/src/main/scala/mrtjp/projectred/transportation/renders.scala b/src/main/scala/mrtjp/projectred/transportation/renders.scala
+index 8e729bb3..376f6209 100644
+--- a/src/main/scala/mrtjp/projectred/transportation/renders.scala
++++ b/src/main/scala/mrtjp/projectred/transportation/renders.scala
+@@ -61,7 +61,7 @@ object RenderPipe {
+     centerModelsRS = rsgen.centerModels
+ 
+     val woolgen = new PipeModelGenerator
+-    woolgen.applyScale(0.80)
++    woolgen.applyScale(0.85)
+     sideModelsWool = woolgen.sideModels
+     centerModelsWool = woolgen.centerModels
+   }
+@@ -82,20 +82,6 @@ object RenderPipe {
+       sideModels(s).render(t, uvt)
+     }
+ 
+-    val gen = new PipeModelGenerator
+-    sideModels = gen.sideModels
+-    centerModels = gen.centerModels
+-
+-    val rsgen = new PipeModelGenerator
+-    rsgen.applyScale(0.90)
+-    sideModelsRS = rsgen.sideModels
+-    centerModelsRS = rsgen.centerModels
+-
+-    val woolgen = new PipeModelGenerator
+-    woolgen.applyScale(0.85)
+-    sideModelsWool = woolgen.sideModels
+-    centerModelsWool = woolgen.centerModels
+-
+   }
+ 
+   def renderRSWiring(p: TRedstonePipe, pos: Vector3, signal: Byte) {

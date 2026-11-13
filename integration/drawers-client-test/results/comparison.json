@@ -1,0 +1,369 @@
+{
+  "status": "passed",
+  "pairs": 3,
+  "run_order": [
+    [
+      1,
+      "baseline"
+    ],
+    [
+      1,
+      "candidate"
+    ],
+    [
+      2,
+      "candidate"
+    ],
+    [
+      2,
+      "baseline"
+    ],
+    [
+      3,
+      "baseline"
+    ],
+    [
+      3,
+      "candidate"
+    ]
+  ],
+  "method": "Real Minecraft/Forge development client and integrated server, real StorageDrawers blocks/controllers and ProjectRed interfaces/chips; no proxy drawer data",
+  "changed_mod": "ProjectRed only; two transfer methods in PluginStorageDrawers.scala",
+  "unchanged_storage_drawers": {
+    "version": "2.2.31-GTNH",
+    "dev_jar_sha256": "3423faca000ad0b374df9834e9b48ad4d40708099c779a325eca87c8bc3db160"
+  },
+  "scene": {
+    "source_drawer_blocks": 50,
+    "destination_drawer_blocks": 50,
+    "logical_drawers_per_controller": 200,
+    "controller_range": 4,
+    "controller_max_drawer_blocks": 50,
+    "item_layout": "All drawers contain matching coal; deliberate duplicate-storage stress layout",
+    "pulse_load": "One item per tick, 400 transfers in 20 seconds",
+    "native_chip_load": "Unmodified extractor scheduling, 64 items per operation, every 10 ticks; measurement 20 seconds",
+    "initial_total_items": 51400
+  },
+  "phases": {
+    "idle": {
+      "baseline": {
+        "runs": 3,
+        "ticks_per_run": 400,
+        "median_run_mean_tick_cpu_ms": 0.4681978425000002,
+        "tick_cpu_means_ms": [
+          0.47252011000000027,
+          0.44794196749999954,
+          0.4681978425000002
+        ],
+        "median_run_mean_tick_wall_ms": 0.4700710550000003,
+        "tick_wall_means_ms": [
+          0.47381840500000066,
+          0.44944016999999953,
+          0.4700710550000003
+        ],
+        "median_run_p95_tick_wall_ms": 0.776633,
+        "count_updates_per_run": [
+          0,
+          0,
+          0
+        ],
+        "median_count_updates": 0,
+        "median_count_payload_bytes": 0,
+        "median_fps": 163.33754102675059,
+        "fps_per_run": [
+          163.83749879085644,
+          163.28742733982276,
+          163.33754102675059
+        ],
+        "median_frame_p95_ms": 6.655233,
+        "client_frames_per_run": [
+          3276,
+          3265,
+          3266
+        ]
+      },
+      "candidate": {
+        "runs": 3,
+        "ticks_per_run": 400,
+        "median_run_mean_tick_cpu_ms": 0.47600966250000015,
+        "tick_cpu_means_ms": [
+          0.47600966250000015,
+          0.48294576749999935,
+          0.46653409249999994
+        ],
+        "median_run_mean_tick_wall_ms": 0.47786412749999974,
+        "tick_wall_means_ms": [
+          0.47786412749999974,
+          0.4863065649999999,
+          0.46714723749999976
+        ],
+        "median_run_p95_tick_wall_ms": 0.750001,
+        "count_updates_per_run": [
+          0,
+          0,
+          0
+        ],
+        "median_count_updates": 0,
+        "median_count_payload_bytes": 0,
+        "median_fps": 163.97849646526313,
+        "fps_per_run": [
+          163.97849646526313,
+          164.03886137219362,
+          163.28915346111017
+        ],
+        "median_frame_p95_ms": 6.680103,
+        "client_frames_per_run": [
+          3278,
+          3280,
+          3264
+        ]
+      },
+      "paired_tick_cpu_reduction_ms": [
+        -0.0034895524999998817,
+        -0.03500379999999981,
+        0.0016637500000002414
+      ],
+      "median_tick_cpu_reduction_percent": -1.668486970868499,
+      "count_update_reduction_percent": null
+    },
+    "one_item_per_tick": {
+      "baseline": {
+        "runs": 3,
+        "ticks_per_run": 400,
+        "median_run_mean_tick_cpu_ms": 0.8187113475000005,
+        "tick_cpu_means_ms": [
+          0.8361442000000001,
+          0.8187113475000005,
+          0.7059949375000002
+        ],
+        "median_run_mean_tick_wall_ms": 0.8280027050000001,
+        "tick_wall_means_ms": [
+          0.8468784074999999,
+          0.8280027050000001,
+          0.7147706225000003
+        ],
+        "median_run_p95_tick_wall_ms": 1.226275,
+        "count_updates_per_run": [
+          80255,
+          80255,
+          80255
+        ],
+        "median_count_updates": 80255,
+        "median_count_payload_bytes": 1284080,
+        "median_fps": 164.1351344221909,
+        "fps_per_run": [
+          164.1351344221909,
+          163.43529612394886,
+          164.13992529694568
+        ],
+        "median_frame_p95_ms": 6.525048,
+        "client_frames_per_run": [
+          3282,
+          3268,
+          3282
+        ]
+      },
+      "candidate": {
+        "runs": 3,
+        "ticks_per_run": 400,
+        "median_run_mean_tick_cpu_ms": 0.5747988175,
+        "tick_cpu_means_ms": [
+          0.5747988175,
+          0.5754552599999997,
+          0.5255151975000001
+        ],
+        "median_run_mean_tick_wall_ms": 0.5837142175000002,
+        "tick_wall_means_ms": [
+          0.5840252975000003,
+          0.5837142175000002,
+          0.5351743824999999
+        ],
+        "median_run_p95_tick_wall_ms": 0.807904,
+        "count_updates_per_run": [
+          799,
+          799,
+          799
+        ],
+        "median_count_updates": 799,
+        "median_count_payload_bytes": 12784,
+        "median_fps": 164.08207918046998,
+        "fps_per_run": [
+          163.4380427132158,
+          164.08207918046998,
+          164.14244140008242
+        ],
+        "median_frame_p95_ms": 6.518054,
+        "client_frames_per_run": [
+          3268,
+          3280,
+          3282
+        ]
+      },
+      "paired_tick_cpu_reduction_ms": [
+        0.26134538250000017,
+        0.24325608750000083,
+        0.1804797400000001
+      ],
+      "median_tick_cpu_reduction_percent": 29.79224982587656,
+      "count_update_reduction_percent": 99.00442340041118
+    },
+    "native_extractor_chip": {
+      "baseline": {
+        "runs": 3,
+        "ticks_per_run": 400,
+        "median_run_mean_tick_cpu_ms": 0.5027221550000003,
+        "tick_cpu_means_ms": [
+          0.5273630649999999,
+          0.5027221550000003,
+          0.4930999675000002
+        ],
+        "median_run_mean_tick_wall_ms": 0.5277124124999997,
+        "tick_wall_means_ms": [
+          0.5321983425000001,
+          0.5277124124999997,
+          0.5029347199999997
+        ],
+        "median_run_p95_tick_wall_ms": 1.114577,
+        "count_updates_per_run": [
+          7753,
+          7753,
+          7753
+        ],
+        "median_count_updates": 7753,
+        "median_count_payload_bytes": 124048,
+        "median_fps": 163.33389803953142,
+        "fps_per_run": [
+          163.33389803953142,
+          163.2883273954406,
+          163.42733159069684
+        ],
+        "median_frame_p95_ms": 6.559165,
+        "client_frames_per_run": [
+          3266,
+          3265,
+          3267
+        ]
+      },
+      "candidate": {
+        "runs": 3,
+        "ticks_per_run": 400,
+        "median_run_mean_tick_cpu_ms": 0.48589618749999985,
+        "tick_cpu_means_ms": [
+          0.48589618749999985,
+          0.5005666999999999,
+          0.4606924575000002
+        ],
+        "median_run_mean_tick_wall_ms": 0.49322320249999974,
+        "tick_wall_means_ms": [
+          0.49322320249999974,
+          0.5075295775000004,
+          0.4678229349999999
+        ],
+        "median_run_p95_tick_wall_ms": 1.045772,
+        "count_updates_per_run": [
+          73,
+          73,
+          73
+        ],
+        "median_count_updates": 73,
+        "median_count_payload_bytes": 1168,
+        "median_fps": 163.3864991469545,
+        "fps_per_run": [
+          163.3368037354777,
+          163.3864991469545,
+          163.3910799405403
+        ],
+        "median_frame_p95_ms": 6.558765,
+        "client_frames_per_run": [
+          3265,
+          3267,
+          3267
+        ]
+      },
+      "paired_tick_cpu_reduction_ms": [
+        0.0414668775,
+        0.0021554550000003614,
+        0.03240750999999997
+      ],
+      "median_tick_cpu_reduction_percent": 3.3469715493243846,
+      "count_update_reduction_percent": 99.05842899522766
+    }
+  },
+  "correctness": {
+    "all_six_runs_passed": true,
+    "all_client_counts_match": true,
+    "all_count_messages_received": true,
+    "nbt_metadata_mismatch": true,
+    "partial_multi_drawer_extraction": true,
+    "populated_before_empty": true,
+    "locked_prototype_retained": true,
+    "void_overflow": true,
+    "vending": true,
+    "compacting_drawers_enabled": false,
+    "ore_conversion_enabled": false
+  },
+  "limits": [
+    "Development runtime mod set, not complete GTNH/Angelica client",
+    "Duplicate-item stress layout; unique-item or mixed warehouses may have smaller benefits",
+    "Count update payload bytes exclude other packets, framing, compression, IP/TCP and fan-out to multiple players",
+    "Timing includes identical tick/packet counters; observer work is not subtracted",
+    "Three paired runs; no confidence interval or general whole-game speedup is asserted",
+    "Only the PR compatibility adapter changed; StorageDrawers controller scanning/indexing remains unchanged",
+    "Compacting drawers and ore conversion are disabled by the copied GTNH config and were not exercised"
+  ],
+  "artifacts": [
+    {
+      "pair": 1,
+      "variant": "baseline",
+      "output": "/home/charles/workspace/self/mc/gtnh/output/drawers-client-test/pair-1-baseline",
+      "artifact_sha256": "b64068cee230ddb48fd52ae66d47b75f773e7cea40497a7f70662915cc73adf6",
+      "status": "passed"
+    },
+    {
+      "pair": 1,
+      "variant": "candidate",
+      "output": "/home/charles/workspace/self/mc/gtnh/output/drawers-client-test/pair-1-candidate",
+      "artifact_sha256": "18a95dbcf5b30714895e4f37996ff3127d34847e32fd5590fb438ffb44584893",
+      "status": "passed"
+    },
+    {
+      "pair": 2,
+      "variant": "candidate",
+      "output": "/home/charles/workspace/self/mc/gtnh/output/drawers-client-test/pair-2-candidate",
+      "artifact_sha256": "18a95dbcf5b30714895e4f37996ff3127d34847e32fd5590fb438ffb44584893",
+      "status": "passed"
+    },
+    {
+      "pair": 2,
+      "variant": "baseline",
+      "output": "/home/charles/workspace/self/mc/gtnh/output/drawers-client-test/pair-2-baseline",
+      "artifact_sha256": "b64068cee230ddb48fd52ae66d47b75f773e7cea40497a7f70662915cc73adf6",
+      "status": "passed"
+    },
+    {
+      "pair": 3,
+      "variant": "baseline",
+      "output": "/home/charles/workspace/self/mc/gtnh/output/drawers-client-test/pair-3-baseline",
+      "artifact_sha256": "b64068cee230ddb48fd52ae66d47b75f773e7cea40497a7f70662915cc73adf6",
+      "status": "passed"
+    },
+    {
+      "pair": 3,
+      "variant": "candidate",
+      "output": "/home/charles/workspace/self/mc/gtnh/output/drawers-client-test/pair-3-candidate",
+      "artifact_sha256": "18a95dbcf5b30714895e4f37996ff3127d34847e32fd5590fb438ffb44584893",
+      "status": "passed"
+    }
+  ],
+  "candidate_source_commit": "01cae953e1a54963758c3250e85363699b44d4c4",
+  "baseline_source_commit": "8337b995920cc69ed6c348d7cf80db03f550ee11",
+  "fixture_sources": {
+    "analyze.py": "ed25343b294e9360b49e0db6a1902f292b6fa88026274d572df35c1a51e43948",
+    "client.init.gradle": "f2d675e820b2b0913bd09fcaeaccc8b233931217900e5b676854b8fb07b6bc29",
+    "README.txt": "db124ffa5ada3408293bf6fe91bfa286494a26e6b14eece7e76760903133882d",
+    "run-pairs.py": "aa759d823be76df1db91181dc6df0d3deb8987a54a7c38478ba36c339d9c169f",
+    "client/runtimechecks/DrawerClientBench.java": "2d54f195d1ecc69459980a9e90860b24f41128943c183c4c8290aed027760a29"
+  },
+  "test_config_sha256": "73a845ea25a23d32db56aec9d0e45627d7e96e6f5082b1fb81c599f2818775a2",
+  "non_adapter_binary_note": "SubcorePipePart has identical disassembly after stripping constant-pool indices; all source outside the adapter is unchanged. Removed anonymous closure classes belong to the old adapter loops."
+}

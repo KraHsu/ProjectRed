@@ -1,0 +1,13 @@
+allprojects {
+    afterEvaluate {
+        def fixture = sourceSets.create('itemRenderClientTest')
+        fixture.java.srcDir(file('integration/client-item-render'))
+        fixture.compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath + sourceSets.main.runtimeClasspath
+        tasks.named('runClient', JavaExec) {
+            dependsOn fixture.classesTaskName
+            classpath += fixture.output
+            systemProperty 'projectred.itemTestOutput', project.findProperty('itemTestOutput') ?: file('build/item-render-client-test').absolutePath
+            maxHeapSize = '4G'
+        }
+    }
+}

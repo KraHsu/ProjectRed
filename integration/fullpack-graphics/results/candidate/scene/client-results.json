@@ -1,0 +1,25 @@
+{
+  "world_basic_and_junction_samples": 144,
+  "redstone_overlay_samples": 16,
+  "fullpack_pipe_crafting_recipe_counts": {
+    "0": 18,
+    "1": 1,
+    "2": 1,
+    "3": 0,
+    "4": 1,
+    "5": 0,
+    "6": 0,
+    "7": 0,
+    "8": 0,
+    "9": 0,
+    "10": 0
+  },
+  "unrelated_recipe_output_errors": 0,
+  "wool_overlay_scope": "Excluded from full-pack pass criteria; previously covered in development regression tests",
+  "native_item_flow_client_ticks": 35,
+  "redstone_overlay_client_sync": true,
+  "resource_reload_completed": true,
+  "empty_render_state_checks": 7487,
+  "save_reopen_redstone_and_transport": true,
+  "status": "passed"
+}

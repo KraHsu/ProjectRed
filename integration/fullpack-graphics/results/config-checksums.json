@@ -1,0 +1,18 @@
+{
+  "ProjectRed.cfg": {
+    "official": "ed05c0721fc06c387194afcc2ceeb1b828af58e6f0caf9c9a3825a1a5d2499a1",
+    "baseline": "ed05c0721fc06c387194afcc2ceeb1b828af58e6f0caf9c9a3825a1a5d2499a1",
+    "candidate": "ed05c0721fc06c387194afcc2ceeb1b828af58e6f0caf9c9a3825a1a5d2499a1"
+  },
+  "StorageDrawers.cfg": {
+    "official": "73a845ea25a23d32db56aec9d0e45627d7e96e6f5082b1fb81c599f2818775a2",
+    "baseline": "846378b803a2a548247a85fca39558419ac736632ccb8d32695a0bbcf71e3302",
+    "candidate": "846378b803a2a548247a85fca39558419ac736632ccb8d32695a0bbcf71e3302",
+    "normal_startup_added_defaults": [
+      "B:enableBackhand=true",
+      "B:enableQuantifyUpgrades=true",
+      "D:itemRenderDistance=48.0"
+    ],
+    "original_assignments_preserved": true
+  }
+}

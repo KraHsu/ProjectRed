@@ -1,0 +1,60 @@
+{
+  "passed": true,
+  "candidate_sha256": "18a95dbcf5b30714895e4f37996ff3127d34847e32fd5590fb438ffb44584893",
+  "results": {
+    "NativeDrawerBench": {
+      "passed": true,
+      "cases": [
+        {
+          "logical_drawers": 4,
+          "requested_extract": 1,
+          "actual_extracted": 1,
+          "count_setter_calls": 1,
+          "extraction_match_checks": 1,
+          "insertion_match_checks": 1,
+          "insertion_count_setters": 1,
+          "native_enumerate_all_matching_median_us": 10.18
+        },
+        {
+          "logical_drawers": 40,
+          "requested_extract": 1,
+          "actual_extracted": 1,
+          "count_setter_calls": 1,
+          "extraction_match_checks": 1,
+          "insertion_match_checks": 1,
+          "insertion_count_setters": 1,
+          "native_enumerate_all_matching_median_us": 42.925
+        },
+        {
+          "logical_drawers": 200,
+          "requested_extract": 1,
+          "actual_extracted": 1,
+          "count_setter_calls": 1,
+          "extraction_match_checks": 1,
+          "insertion_match_checks": 1,
+          "insertion_count_setters": 1,
+          "native_enumerate_all_matching_median_us": 97.942
+        },
+        {
+          "logical_drawers": 1024,
+          "requested_extract": 1,
+          "actual_extracted": 1,
+          "count_setter_calls": 1,
+          "extraction_match_checks": 1,
+          "insertion_match_checks": 1,
+          "insertion_count_setters": 1,
+          "native_enumerate_all_matching_median_us": 1367.763
+        }
+      ],
+      "limits": [
+        "Actual production ProjectRed wrapper and StorageDrawers controller iterator; controlled proxy drawer/group data in an isolated full-pack JVM",
+        "All drawers hold one matching item, an adverse lookup layout; enumeration times include reflection/proxy overhead and are not whole-game timings",
+        "No real tile network scan, packet count, client FPS or live server TPS gain measured"
+      ]
+    }
+  },
+  "limits": [
+    "Full GTNH dedicated-server integration; not a full GTNH/Angelica client FPS test",
+    "Native Minecraft edit checks are retained; third-party claim protections are not exhaustively tested"
+  ]
+}

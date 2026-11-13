@@ -1,0 +1,28 @@
+allprojects {
+    afterEvaluate {
+        def fixture = sourceSets.create('fullpackGraphics')
+        dependencies.add('fullpackGraphicsCompileOnly', 'com.github.GTNewHorizons:GTNHLib:0.11.54:dev') { transitive = false }
+        fixture.java.srcDir(file(project.property('fullpackRoot') + '/src'))
+        fixture.compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath + sourceSets.main.runtimeClasspath
+        def devJar = tasks.register('fullpackFixtureDevJar', Jar) {
+            dependsOn fixture.classesTaskName
+            from fixture.output
+            archiveFileName.set('projectred-fullpack-verification-dev.jar')
+        }
+        def original = tasks.named('reobfJar').get()
+        tasks.register('fullpackFixtureJar', original.class.superclass) {
+            dependsOn tasks.named('reobfJar')
+            setInputJarFromTask(devJar)
+            mcVersion.set(original.mcVersion)
+            srg.set(original.srg)
+            fieldCsv.set(original.fieldCsv)
+            methodCsv.set(original.methodCsv)
+            exceptorCfg.set(original.exceptorCfg)
+            recompMcJar.set(original.recompMcJar)
+            referenceClasspath.from(fixture.compileClasspath)
+            extraSrgEntries.set(original.extraSrgEntries)
+            extraSrgFiles.from(original.extraSrgFiles)
+            archiveFileName.set('projectred-fullpack-verification.jar')
+        }
+    }
+}

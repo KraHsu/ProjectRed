@@ -1,0 +1,623 @@
+diff --git a/src/main/scala/mrtjp/projectred/compatibility/storagedrawers/PluginStorageDrawers.scala b/src/main/scala/mrtjp/projectred/compatibility/storagedrawers/PluginStorageDrawers.scala
+index b008ee61..1ff7587f 100644
+--- a/src/main/scala/mrtjp/projectred/compatibility/storagedrawers/PluginStorageDrawers.scala
++++ b/src/main/scala/mrtjp/projectred/compatibility/storagedrawers/PluginStorageDrawers.scala
+@@ -99,54 +99,54 @@ class StorageDrawersInvWrapper(inv: IInventory) extends InvWrapper(inv) {
+   }
+ 
+   override def injectItem(item: ItemKey, toAdd: Int): Int = {
++    if (toAdd <= 0) return 0
+     var added = 0
+-
+-    for (mergePass <- Array(true, false)) {
+-      for (i <- 0 until getDrawers.getDrawerCount) {
+-        val drawer = getDrawers.getDrawer(i)
+-
++    val drawers = getDrawers
++    val count = drawers.getDrawerCount
++    var pass = 0
++    while (pass < 2 && added < toAdd) {
++      var i = 0
++      while (i < count && added < toAdd) {
++        val drawer = drawers.getDrawer(i)
+         if (drawer != null && drawer.canItemBeStored(item.testStack)) {
+           val spaceLeft = drawer match {
+             case voidable: IVoidable if voidable.isVoid => Int.MaxValue
+             case _ =>
+               drawer.getMaxCapacity(item.testStack) - drawer.getStoredItemCount
+           }
+-          val toAddToDrawer =
+-            if (mergePass && drawer.isEmpty) 0
++          val amount =
++            if (pass == 0 && drawer.isEmpty) 0
+             else math.min(spaceLeft, toAdd - added)
+-
+-          if (toAddToDrawer > 0) {
+-            if (drawer.isEmpty) {
+-              drawer.setStoredItemRedir(item.testStack, toAddToDrawer)
+-            } else {
+-              drawer.setStoredItemCount(
+-                drawer.getStoredItemCount + toAddToDrawer
+-              )
+-            }
++          if (amount > 0) {
++            if (drawer.isEmpty)
++              drawer.setStoredItemRedir(item.testStack, amount)
++            else drawer.setStoredItemCount(drawer.getStoredItemCount + amount)
++            added += amount
+           }
+-
+-          added += toAddToDrawer
+         }
++        i += 1
+       }
++      pass += 1
+     }
+-
+     added
+   }
+ 
+-  override def extractItem(item: ItemKey, toExtract: Int) = {
++  override def extractItem(item: ItemKey, toExtract: Int): Int = {
++    if (toExtract <= 0) return 0
+     var extracted = 0
+-
+-    for (i <- 0 until getDrawers.getDrawerCount) {
+-      val drawer = getDrawers.getDrawer(i)
+-
++    val drawers = getDrawers
++    val count = drawers.getDrawerCount
++    var i = 0
++    while (i < count && extracted < toExtract) {
++      val drawer = drawers.getDrawer(i)
+       if (drawer != null && drawer.canItemBeExtracted(item.testStack)) {
+-        val stored = drawer.getStoredItemCount
+-        val toExtractFromDrawer = math.min(stored, toExtract - extracted)
+-        drawer.setStoredItemCount(
+-          drawer.getStoredItemCount - toExtractFromDrawer
+-        )
+-        extracted += toExtractFromDrawer
++        val amount = math.min(drawer.getStoredItemCount, toExtract - extracted)
++        if (amount > 0) {
++          drawer.setStoredItemCount(drawer.getStoredItemCount - amount)
++          extracted += amount
++        }
+       }
++      i += 1
+     }
+     extracted
+   }
+diff --git a/src/main/scala/mrtjp/projectred/transportation/coalescingupdatequeue.scala b/src/main/scala/mrtjp/projectred/transportation/coalescingupdatequeue.scala
+new file mode 100644
+index 00000000..39ea8684
+--- /dev/null
++++ b/src/main/scala/mrtjp/projectred/transportation/coalescingupdatequeue.scala
+@@ -0,0 +1,70 @@
++package mrtjp.projectred.transportation
++
++import java.util.IdentityHashMap
++import java.util.concurrent.PriorityBlockingQueue
++
++/** One queued or running update per identity; retain the newest requested
++  * version.
++  */
++private[transportation] final class CoalescingUpdateQueue[K <: AnyRef](
++    versionOf: K => Int,
++    work: (K, Int) => Runnable,
++    priority: (K, Int, K, Int) => Int
++) {
++  private val pending = new IdentityHashMap[K, Job]()
++  private val queue = new PriorityBlockingQueue[Job]()
++
++  private class Job(val key: K, val version: Int)
++      extends Runnable
++      with Comparable[Job] {
++    var requestedVersion =
++      version // Access only while holding pending's monitor.
++    val task = work(key, version)
++    override def compareTo(that: Job): Int =
++      priority(key, version, that.key, that.version)
++    override def run(): Unit = try task.run()
++    finally
++      pending.synchronized {
++        if (pending.get(key) eq this) {
++          pending.remove(key)
++          if (requestedVersion != version) enqueue(key, requestedVersion)
++        }
++      }
++  }
++
++  private def enqueue(key: K, version: Int): Unit = {
++    val job = new Job(key, version)
++    pending.put(key, job)
++    queue.add(job)
++  }
++
++  def add(key: K): Unit = pending.synchronized {
++    val version = versionOf(key)
++    val old = pending.get(key)
++    if (old == null) enqueue(key, version)
++    else if (old.requestedVersion != version) {
++      old.requestedVersion = version
++      // Do not change priority fields in-place in the heap. A running job will
++      // enqueue the newest requested version from its completion handler.
++      if (queue.remove(old)) {
++        pending.remove(key)
++        enqueue(key, version)
++      }
++    }
++  }
++
++  def take(): Runnable = queue.take()
++  def size: Int = queue.size()
++
++  def remove(task: Runnable): Boolean = pending.synchronized {
++    val entries = pending.entrySet().iterator()
++    while (entries.hasNext) {
++      val job = entries.next().getValue
++      if (((job eq task) || (job.task eq task)) && queue.remove(job)) {
++        entries.remove()
++        return true
++      }
++    }
++    false
++  }
++}
+diff --git a/src/main/scala/mrtjp/projectred/transportation/filteredpaths.scala b/src/main/scala/mrtjp/projectred/transportation/filteredpaths.scala
+index cc15332b..d1be0e58 100644
+--- a/src/main/scala/mrtjp/projectred/transportation/filteredpaths.scala
++++ b/src/main/scala/mrtjp/projectred/transportation/filteredpaths.scala
+@@ -65,7 +65,10 @@ class Path(val filters: Set[PathFilter]) {
+   def allowItem(item: ItemKey): Boolean = filters.forall(_.allowItem(item))
+   def allowColor(c: Int) = filters.forall(_.allowColor(c))
+ 
+-  val pathFlags = filters.foldLeft(0x3)((b, f) => f.pathFlags & b)
++  val pathFlags = filters.foldLeft(0x3) { (flags, filter) =>
++    filter.freeze()
++    flags & filter.pathFlags
++  }
+   val flagRouteTo = (pathFlags & 0x1) != 0
+   val flagRouteFrom = (pathFlags & 0x2) != 0
+ }
+@@ -75,24 +78,58 @@ object PathFilter {
+ }
+ 
+ class PathFilter {
++  private var frozen = false
++  private var frozenHash = 0
++  private var flagsValue = 0x3
++  private var filterExcludeValue = true
++  private var itemFilterValue: Set[ItemKey] = Set.empty
++  private var colorExcludeValue = true
++  private var colorsValue = 0
++
++  // Keep the existing builder getter/setter ABI. A path publishes an immutable
++  // filter: changing a key after insertion would corrupt its hash set.
++  private def requireMutable() {
++    if (frozen)
++      throw new IllegalStateException("Cannot modify a published path filter")
++  }
++  def pathFlags: Int = flagsValue
++  def pathFlags_=(value: Int) { requireMutable(); flagsValue = value }
++  def filterExclude: Boolean = filterExcludeValue
++  def filterExclude_=(value: Boolean) {
++    requireMutable(); filterExcludeValue = value
++  }
++  def itemFilter: Set[ItemKey] = itemFilterValue
++  def itemFilter_=(value: Set[ItemKey]) {
++    requireMutable(); itemFilterValue = value
++  }
++  def colorExclude: Boolean = colorExcludeValue
++  def colorExclude_=(value: Boolean) {
++    requireMutable(); colorExcludeValue = value
++  }
++  def colors: Int = colorsValue
++  def colors_=(value: Int) { requireMutable(); colorsValue = value }
+ 
+-  /** 00FT T - can travel to F - can come from
+-    */
+-  var pathFlags = 0x3
+-
+-  // Filter for items
+-  var filterExclude = true
+-  var itemFilter: Set[ItemKey] = Set.empty
+   def allowItem(item: ItemKey) = itemFilter.contains(item) != filterExclude
+-
+-  // Filter for colors
+-  var colorExclude = true
+-  var colors = 0
+   def filterContainsColor(c: Int) = (colors & 1 << c) != 0
+   def allowColor(c: Int) = if (0 until 16 contains c)
+     filterContainsColor(c) != colorExclude
+   else true
+ 
++  private def valueHash: Int = {
++    var h = 17
++    h = h * 31 + pathFlags
++    h = h * 31 + (if (filterExclude) 1231 else 1237)
++    h = h * 31 + itemFilter.hashCode
++    h = h * 31 + (if (colorExclude) 1231 else 1237)
++    h * 31 + colors
++  }
++
++  private[transportation] def freeze() {
++    if (!frozen) { frozenHash = valueHash; frozen = true }
++  }
++
++  override def hashCode(): Int = if (frozen) frozenHash else valueHash
++
+   override def equals(other: Any) = other match {
+     case that: PathFilter =>
+       pathFlags == that.pathFlags &&
+diff --git a/src/main/scala/mrtjp/projectred/transportation/renders.scala b/src/main/scala/mrtjp/projectred/transportation/renders.scala
+index 8e729bb3..283c1f1d 100644
+--- a/src/main/scala/mrtjp/projectred/transportation/renders.scala
++++ b/src/main/scala/mrtjp/projectred/transportation/renders.scala
+@@ -61,7 +61,7 @@ object RenderPipe {
+     centerModelsRS = rsgen.centerModels
+ 
+     val woolgen = new PipeModelGenerator
+-    woolgen.applyScale(0.80)
++    woolgen.applyScale(0.85)
+     sideModelsWool = woolgen.sideModels
+     centerModelsWool = woolgen.centerModels
+   }
+@@ -82,20 +82,6 @@ object RenderPipe {
+       sideModels(s).render(t, uvt)
+     }
+ 
+-    val gen = new PipeModelGenerator
+-    sideModels = gen.sideModels
+-    centerModels = gen.centerModels
+-
+-    val rsgen = new PipeModelGenerator
+-    rsgen.applyScale(0.90)
+-    sideModelsRS = rsgen.sideModels
+-    centerModelsRS = rsgen.centerModels
+-
+-    val woolgen = new PipeModelGenerator
+-    woolgen.applyScale(0.85)
+-    sideModelsWool = woolgen.sideModels
+-    centerModelsWool = woolgen.centerModels
+-
+   }
+ 
+   def renderRSWiring(p: TRedstonePipe, pos: Vector3, signal: Byte) {
+@@ -152,6 +138,7 @@ object RenderPipe {
+       pos: Vector3,
+       frame: Float
+   ) {
++    if (p.itemFlow.delegate.isEmpty) return
+     GL11.glPushMatrix()
+     GL11.glDisable(GL11.GL_LIGHTING)
+     for (r <- p.itemFlow.delegate) if (!p.itemFlow.outputQueue.contains(r)) {
+diff --git a/src/main/scala/mrtjp/projectred/transportation/router.scala b/src/main/scala/mrtjp/projectred/transportation/router.scala
+index 0b795aa9..e6630b8e 100644
+--- a/src/main/scala/mrtjp/projectred/transportation/router.scala
++++ b/src/main/scala/mrtjp/projectred/transportation/router.scala
+@@ -39,8 +39,7 @@ object RouterServices {
+ 
+       val newLease = r.getIPAddress
+       if (routers.length <= newLease)
+-        while (routers.length <= (newLease * 1.5).asInstanceOf[Int] + 1)
+-          routers :+= null
++        routers = RouterArrayGrowth.references(routers, newLease)
+ 
+       routers(newLease) = r
+       UUIDTable += (r.getID -> r.getIPAddress)
+@@ -123,9 +122,8 @@ object Router {
+     val ip = Router.claimIPAddress()
+     r.IPAddress = ip
+     if (LSADatabase.length <= ip) {
+-      val newLength = (ip * 1.5).asInstanceOf[Int] + 1
+-      while (LSADatabase.length <= newLength) LSADatabase :+= null
+-      while (LegacyLinkStateID.length <= newLength) LegacyLinkStateID :+= -1
++      LSADatabase = RouterArrayGrowth.references(LSADatabase, ip)
++      LegacyLinkStateID = RouterArrayGrowth.versions(LegacyLinkStateID, ip)
+     }
+     LegacyLinkStateID(ip) = 0
+     LSADatabase(ip) = r.LSA
+@@ -162,7 +160,7 @@ class Router(ID: UUID, parent: IWorldRouter) extends Ordered[Router] {
+   /** * Link State **
+     */
+   private val LSA = new LSA
+-  private var linkStateID = 0
++  @volatile private var linkStateID = 0
+ 
+   /** * Identification **
+     */
+diff --git a/src/main/scala/mrtjp/projectred/transportation/routerarraygrowth.scala b/src/main/scala/mrtjp/projectred/transportation/routerarraygrowth.scala
+new file mode 100644
+index 00000000..659764f4
+--- /dev/null
++++ b/src/main/scala/mrtjp/projectred/transportation/routerarraygrowth.scala
+@@ -0,0 +1,25 @@
++package mrtjp.projectred.transportation
++
++private[transportation] object RouterArrayGrowth {
++  // Match the former append loop's final capacity, including its inclusive end.
++  private def capacity(index: Int): Int = {
++    val size = index.toLong * 3 / 2 + 2
++    require(
++      index >= 0 && size <= Int.MaxValue,
++      "Router index exceeds array capacity"
++    )
++    size.toInt
++  }
++
++  def references[A <: AnyRef](array: Array[A], index: Int): Array[A] = {
++    if (array.length > index) return array
++    java.util.Arrays.copyOf[A](array, capacity(index))
++  }
++
++  def versions(array: Array[Int], index: Int): Array[Int] = {
++    if (array.length > index) return array
++    val grown = java.util.Arrays.copyOf(array, capacity(index))
++    java.util.Arrays.fill(grown, array.length, grown.length, -1)
++    grown
++  }
++}
+diff --git a/src/main/scala/mrtjp/projectred/transportation/routingthread.scala b/src/main/scala/mrtjp/projectred/transportation/routingthread.scala
+index 6c091840..54efeb8b 100644
+--- a/src/main/scala/mrtjp/projectred/transportation/routingthread.scala
++++ b/src/main/scala/mrtjp/projectred/transportation/routingthread.scala
+@@ -1,15 +1,25 @@
+ package mrtjp.projectred.transportation
+ 
+-import java.util.concurrent.PriorityBlockingQueue
+-
+ object TableUpdateThread {
+-  private val updateCalls = new PriorityBlockingQueue[RouteLayerUpdater]()
++  private val updateCalls = new CoalescingUpdateQueue[Router](
++    _.getLinkStateID,
++    (router, version) => new RouteLayerUpdater(router, version),
++    (left, leftVersion, right, rightVersion) => {
++      var c = 0
++      if (rightVersion <= 0)
++        c = java.lang.Integer.compare(leftVersion, rightVersion)
++      if (c == 0)
++        c = java.lang.Integer.compare(left.getIPAddress, right.getIPAddress)
++      if (c == 0) c = java.lang.Integer.compare(rightVersion, leftVersion)
++      c
++    }
++  )
+   private var average = 0L
+ 
+   val avgSync = new AnyRef
+ 
+   def add(r: Router) {
+-    updateCalls.add(new RouteLayerUpdater(r))
++    updateCalls.add(r)
+   }
+ 
+   def remove(run: Runnable) = updateCalls.remove(run)
+@@ -27,7 +37,7 @@ class TableUpdateThread(i: Int) extends Thread("PR RoutingThread #" + i) {
+   override def run() {
+     import TableUpdateThread._
+ 
+-    var job: RouteLayerUpdater = null
++    var job: Runnable = null
+     try {
+       while ({ job = updateCalls.take; job } != null) {
+         val starttime = System.nanoTime
+@@ -45,10 +55,8 @@ class TableUpdateThread(i: Int) extends Thread("PR RoutingThread #" + i) {
+   }
+ }
+ 
+-private[this] class RouteLayerUpdater(val router: Router)
+-    extends Runnable
+-    with Ordered[RouteLayerUpdater] {
+-  private val newVersion = router.getLinkStateID
++private[this] class RouteLayerUpdater(val router: Router, newVersion: Int)
++    extends Runnable {
+   private var complete = false
+ 
+   def run() {
+@@ -68,11 +76,4 @@ private[this] class RouteLayerUpdater(val router: Router)
+     complete = true
+   }
+ 
+-  override def compare(that: RouteLayerUpdater) = {
+-    var c = 0
+-    if (that.newVersion <= 0) c = newVersion - that.newVersion
+-    if (c == 0) c = router.getIPAddress - that.router.getIPAddress
+-    if (c == 0) c = that.newVersion - newVersion
+-    c
+-  }
+ }
+diff --git a/src/test/scala/mrtjp/projectred/transportation/PerformanceFollowupsTest.scala b/src/test/scala/mrtjp/projectred/transportation/PerformanceFollowupsTest.scala
+new file mode 100644
+index 00000000..ee788850
+--- /dev/null
++++ b/src/test/scala/mrtjp/projectred/transportation/PerformanceFollowupsTest.scala
+@@ -0,0 +1,190 @@
++package mrtjp.projectred.transportation
++
++import java.util.concurrent.{CountDownLatch, TimeUnit}
++import org.junit.Assert._
++import org.junit.Test
++
++class PerformanceFollowupsTest {
++  @Test def growthPreservesOldPolicyAndSentinels(): Unit = {
++    for (index <- 0 to 10000 by 97) {
++      val input = Array[AnyRef]("saved", null)
++      val out = RouterArrayGrowth.references(input, index)
++      var expected = input
++      if (expected.length <= index)
++        while (expected.length <= (index * 1.5).toInt + 1) expected :+= null
++      assertArrayEquals(expected, out)
++      val versions = RouterArrayGrowth.versions(Array(7, -1), index)
++      assertEquals(out.length, versions.length)
++      assertEquals(7, versions(0))
++      assertTrue(versions.drop(1).forall(_ == -1))
++    }
++  }
++
++  private def filter(color: Int): PathFilter = {
++    val f = new PathFilter
++    f.colors = color
++    f
++  }
++
++  @Test def equalFiltersDeduplicateInHashTrieAndRemainStable(): Unit = {
++    val filters = (1 to 8).map(filter).toSet
++    val copy = filter(5)
++    assertTrue(filters.contains(copy))
++    assertEquals(8, (filters + copy).size)
++    val path = new Path(filters)
++    assertEquals(filters.hashCode, path.filters.hashCode)
++    val published = path.filters.head
++    val hash = published.hashCode
++    val changes = Seq[() => Unit](
++      () => published.colors = 99,
++      () => published.pathFlags = 0,
++      () => published.filterExclude = false,
++      () => published.itemFilter = Set.empty,
++      () => published.colorExclude = false
++    )
++    changes.foreach { change =>
++      try { change(); fail("Published filter was mutable") }
++      catch { case _: IllegalStateException => () }
++      assertEquals(hash, published.hashCode)
++    }
++    val a = filter(5)
++    a.colorExclude = false
++    a.pathFlags = 1
++    val p = new Path(Set(a))
++    assertTrue(p.allowColor(0)); assertFalse(p.allowColor(1));
++    assertTrue(p.allowColor(2))
++    assertTrue(p.allowColor(-1)); assertTrue(p.flagRouteTo);
++    assertFalse(p.flagRouteFrom)
++  }
++
++  private class Key { @volatile var version = 1 }
++  private def queue(action: (Key, Int) => Unit) =
++    new CoalescingUpdateQueue[Key](
++      _.version,
++      (k, v) => new Runnable { def run(): Unit = action(k, v) },
++      (_, a, _, b) => java.lang.Integer.compare(b, a)
++    )
++
++  @Test def queuedUpdatesAreCoalescedAndReplacedWithLatest(): Unit = {
++    var ran = Vector.empty[Int]
++    val q = queue((_, v) => ran :+= v)
++    val key = new Key
++    for (_ <- 1 to 1000) q.add(key)
++    assertEquals(1, q.size)
++    key.version = 2; q.add(key)
++    key.version = 3; q.add(key)
++    assertEquals(1, q.size)
++    q.take().run()
++    assertEquals(Vector(3), ran)
++    assertEquals(0, q.size)
++    q.add(key)
++    val cancelled = q.take()
++    // Taken/running jobs cannot be cancelled by removing a queued task.
++    assertFalse(q.remove(cancelled))
++    cancelled.run()
++    q.add(key)
++    assertEquals(1, q.size)
++  }
++
++  @Test def inFlightUpdateRetainsNewestVersion(): Unit = {
++    val entered = new CountDownLatch(1)
++    val release = new CountDownLatch(1)
++    val ran = new java.util.concurrent.CopyOnWriteArrayList[Integer]()
++    val q = queue { (_, v) =>
++      ran.add(v)
++      if (v == 1) {
++        entered.countDown(); assertTrue(release.await(5, TimeUnit.SECONDS))
++      }
++    }
++    val key = new Key
++    q.add(key)
++    val worker = new Thread(new Runnable { def run(): Unit = q.take().run() })
++    worker.start()
++    try {
++      assertTrue(entered.await(5, TimeUnit.SECONDS))
++      for (v <- 2 to 1000) { key.version = v; q.add(key) }
++      assertEquals(0, q.size)
++    } finally { release.countDown(); worker.join(5000) }
++    assertFalse(worker.isAlive)
++    assertEquals(1, q.size)
++    q.take().run()
++    assertEquals(java.util.Arrays.asList[Integer](1, 1000), ran)
++    assertEquals(0, q.size)
++  }
++
++  @Test def failedUpdatesReleaseTheirPendingIdentity(): Unit = {
++    val q = queue((_, _) => throw new IllegalStateException("test"))
++    val a = new Key; val b = new Key
++    q.add(a); q.add(b)
++    assertEquals(2, q.size)
++    try q.take().run()
++    catch { case _: IllegalStateException => () }
++    q.add(a); q.add(b)
++    assertEquals(2, q.size)
++  }
++  @Test def fourWorkersDoNotLoseUpdatesOrRunSameKeyConcurrently(): Unit = {
++    val keys = Vector.fill(24)(new Key)
++    val completed = new CountDownLatch(keys.size)
++    val errors = new java.util.concurrent.ConcurrentLinkedQueue[Throwable]()
++    val active = new java.util.concurrent.ConcurrentHashMap[
++      Key,
++      java.util.concurrent.atomic.AtomicInteger
++    ]()
++    keys.foreach(k =>
++      active.put(k, new java.util.concurrent.atomic.AtomicInteger())
++    )
++    val q = queue { (key, version) =>
++      try {
++        assertEquals(
++          "Concurrent jobs for one router",
++          1,
++          active.get(key).incrementAndGet()
++        )
++        Thread.`yield`()
++        if (version == 2000) completed.countDown()
++      } catch { case t: Throwable => errors.add(t) }
++      finally active.get(key).decrementAndGet()
++    }
++    val workers = Vector.fill(4)(new Thread(new Runnable {
++      def run(): Unit = try { while (true) q.take().run() }
++      catch { case _: InterruptedException => () }
++    }))
++    workers.foreach(_.start())
++    try {
++      for (version <- 1 to 2000; key <- keys) {
++        key.version = version
++        q.add(key)
++      }
++      assertTrue(
++        "Newest updates were lost",
++        completed.await(10, TimeUnit.SECONDS)
++      )
++      assertTrue(errors.toString, errors.isEmpty)
++    } finally {
++      workers.foreach(_.interrupt())
++      workers.foreach(_.join(5000))
++    }
++    assertTrue(workers.forall(!_.isAlive))
++    assertEquals(0, q.size)
++  }
++
++  @Test def removalClearsIdentityAndAllowsReschedule(): Unit = {
++    var task: Runnable = null
++    var executions = 0
++    val q = new CoalescingUpdateQueue[Key](
++      _.version,
++      (_, _) => {
++        task = new Runnable { def run(): Unit = { executions += 1 } }; task
++      },
++      (_, _, _, _) => 0
++    )
++    val key = new Key
++    q.add(key)
++    assertTrue(q.remove(task))
++    assertEquals(0, q.size)
++    q.add(key)
++    q.take().run()
++    assertEquals(1, executions)
++  }
++
++}

@@ -1,0 +1,47 @@
+{
+  "records": [
+    {
+      "pair": 1,
+      "variant": "baseline",
+      "output": "/home/charles/workspace/self/mc/gtnh/output/drawers-client-test/pair-1-baseline",
+      "artifact_sha256": "b64068cee230ddb48fd52ae66d47b75f773e7cea40497a7f70662915cc73adf6",
+      "status": "passed"
+    },
+    {
+      "pair": 1,
+      "variant": "candidate",
+      "output": "/home/charles/workspace/self/mc/gtnh/output/drawers-client-test/pair-1-candidate",
+      "artifact_sha256": "18a95dbcf5b30714895e4f37996ff3127d34847e32fd5590fb438ffb44584893",
+      "status": "passed"
+    },
+    {
+      "pair": 2,
+      "variant": "candidate",
+      "output": "/home/charles/workspace/self/mc/gtnh/output/drawers-client-test/pair-2-candidate",
+      "artifact_sha256": "18a95dbcf5b30714895e4f37996ff3127d34847e32fd5590fb438ffb44584893",
+      "status": "passed"
+    },
+    {
+      "pair": 2,
+      "variant": "baseline",
+      "output": "/home/charles/workspace/self/mc/gtnh/output/drawers-client-test/pair-2-baseline",
+      "artifact_sha256": "b64068cee230ddb48fd52ae66d47b75f773e7cea40497a7f70662915cc73adf6",
+      "status": "passed"
+    },
+    {
+      "pair": 3,
+      "variant": "baseline",
+      "output": "/home/charles/workspace/self/mc/gtnh/output/drawers-client-test/pair-3-baseline",
+      "artifact_sha256": "b64068cee230ddb48fd52ae66d47b75f773e7cea40497a7f70662915cc73adf6",
+      "status": "passed"
+    },
+    {
+      "pair": 3,
+      "variant": "candidate",
+      "output": "/home/charles/workspace/self/mc/gtnh/output/drawers-client-test/pair-3-candidate",
+      "artifact_sha256": "18a95dbcf5b30714895e4f37996ff3127d34847e32fd5590fb438ffb44584893",
+      "status": "passed"
+    }
+  ],
+  "status": "all_passed"
+}

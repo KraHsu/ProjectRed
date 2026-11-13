@@ -1,0 +1,18 @@
+allprojects {
+    afterEvaluate {
+        def testRoot = project.findProperty('prTestRoot')
+        if (testRoot == null) throw new GradleException('Specify -PprTestRoot=/path/to/integration/performance')
+        def fixture = sourceSets.create('prClientTest')
+        fixture.java.srcDir(file("${testRoot}/client"))
+        fixture.compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
+        fixture.runtimeClasspath += fixture.output + fixture.compileClasspath
+        tasks.named('runClient', JavaExec) {
+            dependsOn fixture.classesTaskName
+            classpath += fixture.output
+            systemProperty 'projectred.selfTest', 'true'
+            systemProperty 'projectred.testVariant', project.findProperty('prTestVariant') ?: 'cache'
+            systemProperty 'projectred.testOutput', file('build/contribution-client-test').absolutePath
+            maxHeapSize = '4G'
+        }
+    }
+}

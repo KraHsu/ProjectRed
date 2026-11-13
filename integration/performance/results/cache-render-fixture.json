@@ -1,0 +1,48 @@
+{
+  "passed": true,
+  "variants": [
+    {
+      "variant": "original",
+      "cases": 2368,
+      "vertex_fingerprint": "f21eeb6b6d61672e",
+      "geometry_fingerprint": "e674afdc1fd176ad",
+      "check_model_constructions": 2304,
+      "benchmark_model_constructions": 105000,
+      "median_ns_per_pipe": 56274.46,
+      "allocated_bytes_per_pipe": 197908.27,
+      "measured_pipe_calls": 35000,
+      "boundary": "real ProjectRed and CCL; test world/icons and captured Tessellator; no GPU or Angelica"
+    },
+    {
+      "variant": "patched",
+      "cases": 2368,
+      "vertex_fingerprint": "f21eeb6b6d61672e",
+      "geometry_fingerprint": "e674afdc1fd176ad",
+      "check_model_constructions": 0,
+      "benchmark_model_constructions": 0,
+      "median_ns_per_pipe": 3722.81,
+      "allocated_bytes_per_pipe": 274.05,
+      "measured_pipe_calls": 35000,
+      "boundary": "real ProjectRed and CCL; test world/icons and captured Tessellator; no GPU or Angelica"
+    }
+  ],
+  "cpu_path_speedup": 15.1161246477795,
+  "allocation_reduction_percent": 99.86152675681517,
+  "limits": [
+    "Synthetic world/icons and Tessellator sink, real ProjectRed/CCL CPU code",
+    "Not a full GTNH/Angelica GPU test or measured Windows FPS"
+  ],
+  "runtime": {
+    "java": "openjdk version \"25.0.4.1\" 2026-08-18 LTS\nOpenJDK Runtime Environment Temurin-25.0.4.1+1 (build 25.0.4.1+1-LTS)\nOpenJDK 64-Bit Server VM Temurin-25.0.4.1+1 (build 25.0.4.1+1-LTS, mixed mode, sharing)",
+    "artifacts": {
+      "asm-all-5.0.3.jar": "09d44e6adddaab9fd89ea3164c439f71c755769fa8d3a940352ab3d2003b98ff",
+      "CodeChickenCore-1.4.22.jar": "0ff66294703701f156fb493265bf5b3572c4566127ce895095332d2cfe9205c1",
+      "scala-library-2.11.1.jar": "088bcb80f71b6e6a2a31d2fe7288c1fd64f19663ce281b924cdfab3fb105f4f3",
+      "srg_merged_minecraft.jar": "d253f2106b6c42cd09e68e3eb271a05bffc1063ab065ac1a7425f1586d3b5891",
+      "minecraft_server.1.7.10.jar": "c70870f00c4024d829e154f7e5f4e885b02dd87991726a3308d81f513972f3fc",
+      "forge-1.7.10-10.13.4.1614-1.7.10-universal.jar": "00d1ca02192c7efb87da95552ebf247021f1e1d642f86d0a03076314def11529"
+    },
+    "original_sha256": "db2dde71cc9276c62b4c6f131f6155a319633c86419c9c01dca616c3f29dd642",
+    "candidate_sha256": "c35a25a0ba12730709e8ea833cb687fc2f1d0113758bb8e1a42c569348794599"
+  }
+}
